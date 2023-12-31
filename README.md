@@ -18,6 +18,12 @@ python3 -m virtualenv env
 source env/bin/activate
 ```
 
+Em seguida, instale as dependências:
+
+```bash
+pip install -r requirements.txt
+```
+
 ### Configurando o banco de dados
 
 Caso você esteja executando o projeto pela primeira vez, é necessário configurar o banco de dados.
