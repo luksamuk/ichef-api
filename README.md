@@ -14,7 +14,7 @@
 Para este projeto, recomenda-se o uso de VirtualEnv. Para tanto, garanta que seu Python da máquina local esteja atualizado, vá até a raiz do repositório e execute os comandos a seguir:
 
 ```bash
-python3 -m virtualenv env
+python3 -m venv env
 source env/bin/activate
 ```
 

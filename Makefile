@@ -1,5 +1,8 @@
 .PHONY: startdb stopdb dblogs migrate
 
+run:
+	uvicorn teste_workalove.main:app --reload
+
 startdb:
 	docker compose -f docker-compose-dev.yml up -d
 	@echo "PgAdmin may take a while, but will be accessible in port 5433."
