@@ -28,7 +28,7 @@ pip install -r requirements.txt
 
 Caso você esteja executando o projeto pela primeira vez, é necessário configurar o banco de dados.
 
-Navegue até o diretório do projeto Python (`teste_tecnico_workalove`), e use os comandos para iniciar o PostgreSQL 16.1 e o PgAdmin 4 usando Docker:
+Navegue até o diretório-base deste projeto, e use os comandos para iniciar o PostgreSQL 16.1 e o PgAdmin 4 usando Docker:
 
 ```bash
 make startdb
@@ -60,7 +60,20 @@ python manage.py migrate
 
 > Você poderá encontrar outros comandos e configurações analisando os arquivos `Makefile`, `docker-compose-dev.yml` e `.env`.
 
+### Criando um usuário `admin`
+
+Após a configuração do banco de dados, você poderá criar um usuário `admin` usando um comando como a seguir:
+
+```bash
+python manage.py createsuperuser --username admin --email admin@admin.com
+```
+
+No prompt que aparece, digite a senha do usuário que será criado. Esse usuário será importante para gerenciar outros usuários na aplicação.
+
 ## Executando a aplicação
+
+### Usuários
+
 
 
 

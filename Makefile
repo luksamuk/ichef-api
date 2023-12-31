@@ -7,6 +7,7 @@ startdb:
 
 stopdb:
 	docker compose -f docker-compose-dev.yml down
+	docker compose -f docker-compose-dev.yml rm -fsv
 
 dblogs:
 	docker compose -f docker-compose-dev.yml logs
