@@ -13,7 +13,7 @@ def make_engine():
             settings.database_host,
             settings.database_port,
             settings.database_name
-        ))
+        ), echo=True)
 
 engine = make_engine()
 
@@ -23,7 +23,7 @@ DeclarativeBase = declarative_base()
 
 class DatabaseModel(DeclarativeBase):
     __abstract__ = True
-    created_at = Column(DateTime, default=datetime.now)
+    created_at = Column(DateTime, default=datetime.now, index=True)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
 def make_session():

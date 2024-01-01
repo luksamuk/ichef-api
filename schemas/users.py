@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 from uuid import UUID
 
 from .recipes import Recipe
@@ -14,7 +15,8 @@ class UserCreate(UserCommon):
 
 class User(UserCommon):
     id: UUID
-    recipes: list[Recipe] = [] # TODO: Informação demais na resposta?
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         orm_mode = True

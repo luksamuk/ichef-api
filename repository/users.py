@@ -13,7 +13,17 @@ def get_user_by_email(db: Session, email: str) -> model.User | None:
     return db.query(model.User).filter(model.User.email ==  email).first()
 
 def get_users(db: Session, offset: int = 0, limit: int = 100) -> list[model.User]:
-    db.query(model.User).offset(offset).limit(limit).all()
+    return db.query(model.User)\
+      .order_by(model.User.created_at.desc())\
+      .offset(offset).limit(limit)\
+      .all()
+
+def get_chefs(db: Session, offset: int = 0, limit: int = 100) -> list[model.User]:
+    return db.query(model.User)\
+      .order_by(model.User.created_at.desc())\
+      .filter(model.User.is_chef)\
+      .offset(offset).limit(limit)\
+      .all()
 
 def create_user(db: Session, payload: schema.UserCreate) -> model.User:
     hashed_password = gen_password_hash(payload.password)
