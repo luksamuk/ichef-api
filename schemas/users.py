@@ -14,7 +14,7 @@ class UserCreate(UserCommon):
 
 class User(UserCommon):
     id: UUID
-    recipes: list[Recipe] = []
+    recipes: list[Recipe] = [] # TODO: Informação demais na resposta?
 
     class Config:
         orm_mode = True

@@ -1,4 +1,4 @@
-.PHONY: startdb stopdb dblogs migrate
+.PHONY: startdb stopdb dblogs run
 
 run:
 	uvicorn teste_workalove.main:app --reload
@@ -14,7 +14,4 @@ stopdb:
 
 dblogs:
 	docker compose -f docker-compose-dev.yml logs
-
-migrate:
-	python manage.py migrate
 

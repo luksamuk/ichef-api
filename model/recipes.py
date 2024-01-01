@@ -5,7 +5,6 @@ from datetime import datetime, time, timedelta
 import uuid
 
 from db import DatabaseModel
-# from .users import User
 
 class Recipe(DatabaseModel):
     __tablename__ = 'recipes'

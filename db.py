@@ -26,4 +26,10 @@ class DatabaseModel(DeclarativeBase):
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
+def make_session():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
