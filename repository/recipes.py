@@ -42,7 +42,7 @@ def find_by_filter(db: Session, payload: schema.RecipeFilter, offset: int = 0, l
         query = query.filter(
             model.Recipe.text_search\
             .bool_op('@@')(
-                func.to_tsquery('portuguese', payload.text)
+                func.plainto_tsquery('portuguese', payload.text)
             ))
 
     return query.offset(offset).limit(limit).all()
