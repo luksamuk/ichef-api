@@ -14,13 +14,15 @@ def get_user_by_email(db: Session, email: str) -> model.User | None:
 
 def get_users(db: Session, offset: int = 0, limit: int = 100) -> list[model.User]:
     return db.query(model.User)\
-      .order_by(model.User.created_at.desc())\
+      .order_by(model.User.created_at.asc())\
       .offset(offset).limit(limit)\
       .all()
 
+# TODO: Get number of pages
+
 def get_chefs(db: Session, offset: int = 0, limit: int = 100) -> list[model.User]:
     return db.query(model.User)\
-      .order_by(model.User.created_at.desc())\
+      .order_by(model.User.created_at.asc())\
       .filter(model.User.is_chef)\
       .offset(offset).limit(limit)\
       .all()

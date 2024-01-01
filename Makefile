@@ -1,7 +1,11 @@
-.PHONY: startdb stopdb dblogs run
+.PHONY: startdb stopdb dblogs migrate run
 
 run:
 	uvicorn teste_workalove.main:app --reload
+
+migrate:
+# Create your migration with "alembic revision --autogenerate -m 'Migration name'"
+	alembic upgrade head
 
 startdb:
 	docker compose -f docker-compose-dev.yml up -d

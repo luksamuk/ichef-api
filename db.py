@@ -4,18 +4,20 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from settings import get_settings
 
-def make_engine():
+def make_connection_string() -> str:
     settings = get_settings()
-    return create_engine(
-        'postgresql://%s:%s@%s:%s/%s' % (
-            settings.database_user,
-            settings.database_password,
-            settings.database_host,
-            settings.database_port,
-            settings.database_name
-        ), echo=True)
+    return 'postgresql://%s:%s@%s:%s/%s' % (
+        settings.database_user,
+        settings.database_password,
+        settings.database_host,
+        settings.database_port,
+        settings.database_name
+    )
 
-engine = make_engine()
+def make_engine(echo=False):
+    return create_engine(make_connection_string(), echo=echo)
+
+engine = make_engine(echo=True)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

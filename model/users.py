@@ -16,4 +16,4 @@ class User(DatabaseModel):
     is_chef = Column(Boolean, default=False, index=True, nullable=False)
     is_admin = Column(Boolean, default=False, nullable=False)
 
-    # recipes = relationship('Recipe', back_populates='chef')
+    recipes = relationship('Recipe', back_populates='chef')
