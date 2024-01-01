@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 from datetime import datetime
 from uuid import UUID
 
@@ -18,3 +19,7 @@ class Recipe(RecipeCommon):
     class Config:
         orm_mode = True
 
+
+class RecipeFilter(BaseModel):
+    chef_id: Optional[UUID] = None
+    text: Optional[str] = None

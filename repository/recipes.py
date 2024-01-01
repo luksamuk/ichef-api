@@ -31,5 +31,18 @@ def create_recipe(db: Session, payload: schema.RecipeCreate) -> model.Recipe:
 
 # TODO: Update recipe
 
-# TODO: Find recipe by text
 
+def find_by_filter(db: Session, payload: schema.RecipeFilter, offset: int = 0, limit: int = 100) -> list[model.Recipe]:
+    query = db.query(model.Recipe)
+
+    if not (payload.chef_id is None):
+        query = query.filter(model.Recipe.chef_id ==  payload.chef_id)
+
+    if not (payload.text is None):
+        query = query.filter(
+            model.Recipe.text_search\
+            .bool_op('@@')(
+                func.to_tsquery('portuguese', payload.text)
+            ))
+
+    return query.offset(offset).limit(limit).all()
