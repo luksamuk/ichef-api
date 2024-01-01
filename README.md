@@ -96,3 +96,16 @@ uvicorn teste_workalove.main:app --reload
 ## Licenciamento
 
 Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+## Checklist
+
+- [ ] Controllers entre endpoints e repositórios
+- [ ] Testes
+- [ ] Automação de testes com GitHub Actions
+- [ ] Documentação
+- [ ] Admin criado na primeira execução
+- [ ] Autenticação
+- [x] Pesquisa de receitas por texto e por Chef
+- [ ] Desativação de usuários
+- [ ] Remoção de receitas
+
