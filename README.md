@@ -7,6 +7,20 @@
 - Python 3.11 ou superior;
 - Docker instalado (de preferência com o usuário atual no grupo `docker`).
 
+## Descrição dos diretórios do projeto
+
+Abaixo há uma descrição rápida dos diretórios e arquivos principais do projeto. Para mais informações, veja a documentação da solução.
+
+- `alembic` e `alembic.ini`: Configurações e arquivos de migrations.
+- `endpoints`: Reúne os endpoints REST da aplicação.
+- `model`: Reúne os models, portanto sendo diretamente relacionado à persistência no banco de dados.
+- `repository`: Reúne estruturas relacionadas a consulta e armazenamento no banco de dados, como queries realizadas via ORM.
+- `schemas`: Reúne estruturas representacionais (DTOs) para envio e recebimento na API, que podem ser mapeadas para models, dependendo da situação.
+- `teste_workalove`: Ponto de entrada principal do projeto.
+- `util`: Utilitários variados, como funções de encriptação.
+- `db.py`: Módulo de configuração de conexão e persistência genérica com banco de dados.
+- `settings.py`: Módulo relacionado a leitura de configurações de arquivos `.env` e/ou variáveis de ambiente.
+
 ## Executando o projeto
 
 ### Configurando o VirtualEnv
@@ -77,7 +91,6 @@ uvicorn teste_workalove.main:app --reload
 
 
 ## Testes
-
 
 
 ## Licenciamento
