@@ -16,12 +16,12 @@ def get_recipes(db: Session, offset: int = 0, limit: int = 100) -> list[model.Re
 
 # TODO: Get number of pages
 
-def create_recipe(db: Session, payload: schema.CreateRecipe) -> model.Recipe:
+def create_recipe(db: Session, payload: schema.RecipeCreate) -> model.Recipe:
     # TODO: Check if chef really exists!
     db_model = model.Recipe(
         title = payload.title,
-        chef_id = payload.chef_id
-        text = payload.text
+        chef_id = payload.chef_id,
+        text = payload.text,
         text_search = func.to_tsvector('portuguese', payload.title + ' ' + payload.text)
     )
     db.add(db_model)
@@ -29,4 +29,7 @@ def create_recipe(db: Session, payload: schema.CreateRecipe) -> model.Recipe:
     db.refresh(db_model)
     return db_model
 
-# TODO: Find recipe by 
+# TODO: Update recipe
+
+# TODO: Find recipe by text
+
