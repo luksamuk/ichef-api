@@ -49,31 +49,34 @@ Em seguida, copie o arquivo `.env.example` para `.env`, no mesmo diretório.
 
 No PgAdmin4 ou similar, Crie um banco de dados chamado `teste-workalove`, ou um outro nome de acordo com o arquivo `.env`.
 
-Finalmente, execute as migrations no banco de dados:
+Finalmente, execute as migrations no banco de dados, usando Alembic:
 
 ```bash
 make migrate
 
 # Ou...
-python manage.py migrate
+alembic upgrade head
 ```
 
-> Você poderá encontrar outros comandos e configurações analisando os arquivos `Makefile`, `docker-compose-dev.yml` e `.env`.
-
-### Criando um usuário `admin`
-
-Após a configuração do banco de dados, você poderá criar um usuário `admin` usando um comando como a seguir:
-
-```bash
-python manage.py createsuperuser --username admin --email admin@admin.com
-```
-
-No prompt que aparece, digite a senha do usuário que será criado. Esse usuário será importante para gerenciar outros usuários na aplicação.
+> O arquivo `alembic/env.py` foi modificado para levar em consideração os models, configurações e variávels de ambiente do projeto. Caso você crie algum model novo, certifique-se de importá-lo em `model/__init__.py`.
+>
+> Além disso, você poderá encontrar outros comandos e configurações analisando os arquivos `Makefile`, `docker-compose-dev.yml` e `.env`.
 
 ## Executando a aplicação
 
+Para iniciar a aplicação em modo debug, posto que o banco de dados esteja em execução e as migrations tenham sido executadas, você poderá usar o seguinte comando:
+
+```bash
+make run
+
+# Ou...
+uvicorn teste_workalove.main:app --reload
+```
+
 ### Usuários
 
+
+## Testes
 
 
 
