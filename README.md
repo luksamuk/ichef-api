@@ -106,7 +106,7 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
 
 - [x] Updates das entidades
 - [ ] Testes
-  - [ ] Automação de testes com GitHub Actions
+  - [x] Automação de testes com GitHub Actions
   - [x] Rota ping
   - [ ] Criar usuário
   - [ ] Criar chef
