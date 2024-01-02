@@ -111,8 +111,8 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [x] Criar chef
   - [x] Criar admin
   - [x] Recuperar listas de usuários
-  - [ ] Recuperar usuário por ID
-  - [ ] Recuperar usuário por e-mail
+  - [x] Recuperar usuário por ID
+  - [x] Recuperar usuário por e-mail
   - [ ] Atualizar usuário
   - [ ] Desativar usuário
   - [ ] Remover usuário

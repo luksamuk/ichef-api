@@ -8,12 +8,14 @@ from uuid import UUID
 
 client = TestClient(app)
 
+
 def is_valid_uuid(val: str) -> bool:
     try:
         UUID(val)
         return True
     except ValueError:
         return False
+
 
 payloads = {
     "admin": {
@@ -31,7 +33,23 @@ payloads = {
 	"is_admin": False,
     }
 }
+
+def check_response_valid(response, payload):
+    assert "name" in response
+    assert "email" in response
+    assert "is_chef" in response
+    assert "is_admin" in response
+    assert "id" in response
+    assert "password" not in response
+    assert "pw_hash" not in response
     
+    assert response["name"] == payload["name"]
+    assert response["email"] == payload["email"]
+    assert response["is_chef"] == payload["is_chef"]
+    assert response["is_admin"] == payload["is_admin"]
+    assert is_valid_uuid(response["id"])
+
+
 @pytest.mark.dependency()
 def test_create_admin():
     payload = payloads["admin"]
@@ -42,16 +60,8 @@ def test_create_admin():
     )
 
     assert response.status_code == 200
+    check_response_valid(response.json(), payload)
 
-    res = response.json()
-    assert res["name"] == payload["name"]
-    assert res["email"] == payload["email"]
-    assert res["is_chef"] == payload["is_chef"]
-    assert res["is_admin"] == payload["is_admin"]
-    assert "password" not in res
-    assert "pw_hash" not in res
-    assert "id" in res
-    assert is_valid_uuid(res["id"])
 
 @pytest.mark.dependency()
 def test_create_chef():
@@ -63,16 +73,7 @@ def test_create_chef():
     )
 
     assert response.status_code == 200
-
-    res = response.json()
-    assert res["name"] == payload["name"]
-    assert res["email"] == payload["email"]
-    assert res["is_chef"] == payload["is_chef"]
-    assert res["is_admin"] == payload["is_admin"]
-    assert "password" not in res
-    assert "pw_hash" not in res
-    assert "id" in res
-    assert is_valid_uuid(res["id"])
+    check_response_valid(response.json(), payload)
 
 
 @pytest.mark.dependency(depends=["test_create_admin", "test_create_chef"])
@@ -98,13 +99,22 @@ def test_list_users():
             payload = payloads["chef"]
         else:
             raise Exception('Unknown entity. Is the database clean?')
-        
-        assert elt["name"] == payload["name"]
-        assert elt["email"] == payload["email"]
-        assert elt["is_chef"] == payload["is_chef"]
-        assert elt["is_admin"] == payload["is_admin"]
-        assert "password" not in elt
-        assert "pw_hash" not in elt
-        assert "id" in elt
-        assert is_valid_uuid(elt["id"])
-        
+
+        check_response_valid(elt, payload)
+
+
+@pytest.mark.dependency(depends=["test_create_chef"])
+def test_recover_user():
+    payload = payloads["chef"]
+    
+    # Recover user by e-mail
+    response = client.get('/users/email/' + payload["email"])
+    assert response.status_code == 200
+    check_response_valid(response.json(), payload)
+
+    # Recover same user, this time by ID
+    id = response.json()["id"]
+    response2 = client.get('/users/' + id)
+    assert response2.status_code == 200
+    check_response_valid(response2.json(), payload)
+
