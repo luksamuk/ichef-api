@@ -179,7 +179,7 @@ pytest
   - [ ] Pesquisar receitas por chef e texto
 - [ ] Autenticação
   - [x] Autenticação via JWT
-  - [ ] Criação de receita através do usuário da sessão atual
+  - [x] Criação de receita através do usuário da sessão atual
   - [ ] Admin criado na primeira execução
   - [ ] Atualizar testes para usar autenticação
 - [ ] Deletes das entidades

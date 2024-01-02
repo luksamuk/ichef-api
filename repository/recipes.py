@@ -55,7 +55,7 @@ def update_recipe(db: Session, id: uuid.UUID, payload: schema.RecipeUpdate) -> m
     # search index as well
     if (payload.title is not None) or (payload.text is not None):
         db_model.text_search =\
-            func.to_tsvector('portuguese', payload.title + ' ' + payload.text)
+            func.to_tsvector('portuguese', db_model.title + ' ' + db_model.text)
 
     db.commit()
     db.refresh(db_model)
