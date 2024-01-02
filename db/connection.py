@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, DateTime
+from sqlalchemy import create_engine
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 from config.settings import get_settings
