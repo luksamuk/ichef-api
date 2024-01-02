@@ -24,6 +24,6 @@ class Recipe(RecipeCommon):
         orm_mode = True
 
 
-class RecipeFilter(BaseModel):
+class RecipeSearchFilters(BaseModel):
     chef_id: Optional[UUID] = None
     text: Optional[str] = None

@@ -30,7 +30,7 @@ async def create_recipe(payload: schema.RecipeCreate, db: Session = Depends(db.m
 
 
 @router.post('/search', response_model=list[schema.Recipe])
-async def search_recipe(payload: schema.RecipeFilter, db: Session = Depends(db.make_session)):
+async def search_recipe(payload: schema.RecipeSearchFilters, db: Session = Depends(db.make_session)):
     if (payload.chef_id is None) and (payload.text is None):
         raise HTTPException(status_code=400, detail='Must use at least one filter')
 

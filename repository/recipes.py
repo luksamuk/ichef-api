@@ -31,7 +31,7 @@ def create_recipe(db: Session, payload: schema.RecipeCreate) -> model.Recipe:
     return db_model
 
 
-def find_by_filter(db: Session, payload: schema.RecipeFilter, offset: int = 0, limit: int = 100) -> list[model.Recipe]:
+def find_by_filter(db: Session, payload: schema.RecipeSearchFilters, offset: int = 0, limit: int = 100) -> list[model.Recipe]:
     query = db.query(model.Recipe)
 
     if payload.chef_id is not None:
