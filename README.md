@@ -134,7 +134,7 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
 
 - [x] Pesquisa de receitas por texto e por Chef
 - [x] Updates das entidades
-- [x] Testes básicos e de usuário (pt. 1)
+- [x] Testes básicos (pt. 1)
   - [x] Automação de testes com GitHub Actions
   - [x] Rota ping
   - [x] Criar chef
@@ -145,21 +145,22 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [x] Atualizar usuário
 - [x] Reorganizar arquivos avulsos
 - [x] Instruções de instalação Pytest / Alembic
-- [ ] Controllers entre endpoints e repositórios
-  - [ ] Controller de usuários
-  - [ ] Controller de receitas
-- [ ] Autenticação
-  - [ ] Admin criado na primeira execução
-- [ ] Testes de receitas (pt. 1)
+- [x] Controllers entre endpoints e repositórios
+  - [x] Controller de usuários
+  - [x] Controller de receitas
+- [ ] Testes (pt. 2)
   - [ ] Criar receita
   - [ ] Atualizar receita
   - [ ] Pesquisar receitas por chef
   - [ ] Pesquisar receitas por texto
   - [ ] Pesquisar receitas por chef e texto
+- [ ] Autenticação
+  - [ ] Admin criado na primeira execução
+  - [ ] Atualizar testes para usar autenticação
 - [ ] Deletes das entidades
   - [ ] Desativação de usuários
   - [ ] Remoção de receitas
-- [ ] Testes pt. 2
+- [ ] Testes (pt. 3)
   - [ ] Paginação de listagem
   - [ ] Desativar usuário
   - [ ] Remover usuário
