@@ -31,8 +31,8 @@ def get_chefs(db: Session, offset: int, limit: int) -> list[model.User]:
 def create_user(db: Session, model: model.User) -> model.User:
     db.add(model)
     db.commit()
-    db.refresh(db_model)
-    return db_model
+    db.refresh(model)
+    return model
     
 def update_user(db: Session, id: uuid.UUID, payload: schema.UserUpdate) -> model.User:
     db_model = get_user(db, id)

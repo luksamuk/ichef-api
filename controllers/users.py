@@ -53,7 +53,8 @@ def update_user(db: Session, id: uuid.UUID, payload: schema.UserUpdate) -> model
        (payload.is_admin is None):
         raise HTTPException(status_code=400, detail='Nothing needs to be changed')
 
-    if repository.get_user(db, id) is None:
+    db_model = repository.get_user(db, id)
+    if db_model is None:
         raise HTTPException(status_code=404, detail='User not found')
 
     if payload.password is not None:
