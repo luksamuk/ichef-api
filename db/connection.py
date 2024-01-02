@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, DateTime
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
-from settings import get_settings
+from config.settings import get_settings
 
 def make_connection_string() -> str:
     settings = get_settings()

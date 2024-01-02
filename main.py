@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from endpoints import users, recipes
-from settings import get_settings
+from config.settings import get_settings
 
 app = FastAPI()
 

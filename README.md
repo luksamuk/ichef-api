@@ -18,9 +18,9 @@ Abaixo há uma descrição rápida dos diretórios e arquivos principais do proj
 - `schemas`: Reúne estruturas representacionais (DTOs) para envio e recebimento na API, que podem ser mapeadas para models, dependendo da situação.
 - `util`: Utilitários variados, como funções de encriptação.
 - `tests`: Módulo e arquivos relacionados a testes.
-- `main.py`: Ponto de entrada principal do projeto.
 - `db`: Módulo de configuração de conexão e persistência genérica com banco de dados.
-- `settings.py`: Módulo relacionado a leitura de configurações de arquivos `.env` e/ou variáveis de ambiente.
+- `config`: Módulo relacionado a leitura de configurações de arquivos `.env` e/ou variáveis de ambiente.
+- `main.py`: Ponto de entrada principal do projeto.
 
 ## Executando o projeto
 
@@ -115,7 +115,7 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [x] Recuperar usuário por ID
   - [x] Recuperar usuário por e-mail
   - [x] Atualizar usuário
-- [ ] Reorganizar arquivos avulsos
+- [x] Reorganizar arquivos avulsos
 - [ ] Instruções de instalação Pytest / Alembic
 - [ ] Controllers entre endpoints e repositórios
   - [ ] Controller de usuários
