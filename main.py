@@ -1,10 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
-from endpoints import users, recipes
+from endpoints import users, recipes, auth
 from config.settings import get_settings
 
 app = FastAPI()
 
+app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(recipes.router)
 
