@@ -18,6 +18,9 @@ jobs:
       DATABASE_HOST: localhost
       DATABASE_PORT: 5432
       API_PORT: 8000
+      JWT_SECRET: this-is-an-unsafe-secret
+      JWT_ALGORITHM: HS256
+      JWT_EXPIRY_SECONDS: 600
     
     services:
       postgresql:
