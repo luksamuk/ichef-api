@@ -124,7 +124,23 @@ python3 main.py
 
 ## Testes
 
-Esta aplicação possui testes E2E de API que testam requisições e retorno dentro da mesma. Para testar, certifique-se de que a mesma esteja em 
+Esta aplicação possui testes E2E de API que testam requisições e retorno dentro da mesma. Para testar, certifique-se de que:
+
+- O PostgreSQL esteja em execução;
+- O banco de dados esteja atualizado;
+- As migrations tenham sido executadas;
+- O banco de dados esteja sem informações; e
+- O Pytest esteja instalado.
+
+Para executar os testes, basta executar o Pytest:
+
+```bash
+pytest
+```
+
+> _NOTA:_ Para garantir que você esteja executando o Pytest do VirtualEnv, verifique a localização do binário usando `which pytest` no Linux.
+>
+> _NOTA:_ Este repositório também possui testes automatizados via GitHub Actions. Os testes podem ser executados manualmente, após um Pull Request ou após um commit em qualquer branch.
 
 ## Licenciamento
 
