@@ -160,6 +160,7 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [ ] Desativação de usuários
   - [ ] Remoção de receitas
 - [ ] Testes pt. 2
+  - [ ] Paginação de listagem
   - [ ] Desativar usuário
   - [ ] Remover usuário
   - [ ] Deletar receita
