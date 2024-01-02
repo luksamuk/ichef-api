@@ -108,11 +108,9 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
 - [ ] Testes
   - [x] Automação de testes com GitHub Actions
   - [x] Rota ping
-  - [ ] Criar usuário
-  - [ ] Criar chef
-  - [ ] Criar admin
-  - [ ] Criar admin e chef
-  - [ ] Recuperar listas de usuários
+  - [x] Criar chef
+  - [x] Criar admin
+  - [x] Recuperar listas de usuários
   - [ ] Recuperar usuário por ID
   - [ ] Recuperar usuário por e-mail
   - [ ] Atualizar usuário
