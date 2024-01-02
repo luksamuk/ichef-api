@@ -105,7 +105,7 @@ def test_list_users():
 
 @pytest.mark.dependency(depends=["test_create_admin", "test_create_chef"])
 def test_recover_user():
-    for payload in payloads:
+    for _, payload in payloads.items():
         # Recover user by e-mail
         response = client.get('/users/email/' + payload["email"])
         assert response.status_code == 200
