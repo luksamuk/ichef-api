@@ -104,3 +104,28 @@ def test_create_recipe(prepare_data):
     # TODO: Delete this extra user
     # TODO
 
+@pytest.mark.skip(reason="Unimplemented")
+@pytest.mark.dependency()
+def test_update_recipe(prepare_data):
+    pass
+
+@pytest.mark.skip(reason="Unimplemented")
+@pytest.mark.dependency()
+def test_search_recipe_by_chef(prepare_data):
+    pass
+
+@pytest.mark.skip(reason="Unimplemented")
+@pytest.mark.dependency()
+def test_search_recipe_by_text(prepare_data):
+    pass
+
+@pytest.mark.skip(reason="Unimplemented")
+@pytest.mark.dependency()
+def test_search_recipe_by_chef_and_text(prepare_data):
+    pass
+
+@pytest.mark.skip(reason="Unimplemented")
+@pytest.mark.dependency()
+def test_delete_recipe(prepare_data):
+    pass
+
