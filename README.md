@@ -16,8 +16,9 @@ Abaixo há uma descrição rápida dos diretórios e arquivos principais do proj
 - `model`: Reúne os models, portanto sendo diretamente relacionado à persistência no banco de dados.
 - `repository`: Reúne estruturas relacionadas a consulta e armazenamento no banco de dados, como queries realizadas via ORM.
 - `schemas`: Reúne estruturas representacionais (DTOs) para envio e recebimento na API, que podem ser mapeadas para models, dependendo da situação.
-- `main.py`: Ponto de entrada principal do projeto.
 - `util`: Utilitários variados, como funções de encriptação.
+- `tests`: Módulo e arquivos relacionados a testes.
+- `main.py`: Ponto de entrada principal do projeto.
 - `db.py`: Módulo de configuração de conexão e persistência genérica com banco de dados.
 - `settings.py`: Módulo relacionado a leitura de configurações de arquivos `.env` e/ou variáveis de ambiente.
 
@@ -76,7 +77,7 @@ alembic upgrade head
 >
 > Além disso, você poderá encontrar outros comandos e configurações analisando os arquivos `Makefile`, `docker-compose-dev.yml` e `.env`.
 
-## Executando a aplicação
+### Executando a aplicação
 
 Para iniciar a aplicação em modo debug, posto que o banco de dados esteja em execução e as migrations tenham sido executadas, você poderá usar o seguinte comando:
 
@@ -87,11 +88,15 @@ make run
 uvicorn main:app --reload
 ```
 
-### Usuários
+Caso você queira executar a aplicação sem utilizar o `uvicorn` diretamente, e sem recarregamento após alterar algum arquivo, basta executar diretamente o arquivo `main.py`:
 
+```bash
+python3 main.py
+```
 
 ## Testes
 
+Esta aplicação possui testes E2E de API que testam requisições e retorno dentro da mesma. Para testar, certifique-se de que a mesma esteja em 
 
 ## Licenciamento
 
@@ -100,10 +105,27 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
 ## Checklist
 
 - [x] Updates das entidades
+- [ ] Testes
+  - [ ] Automação de testes com GitHub Actions
+  - [x] Rota ping
+  - [ ] Criar usuário
+  - [ ] Criar chef
+  - [ ] Criar admin
+  - [ ] Criar admin e chef
+  - [ ] Recuperar listas de usuários
+  - [ ] Recuperar usuário por ID
+  - [ ] Recuperar usuário por e-mail
+  - [ ] Atualizar usuário
+  - [ ] Desativar usuário
+  - [ ] Remover usuário
+  - [ ] Criar receita
+  - [ ] Atualizar receita
+  - [ ] Deletar receita
+  - [ ] Pesquisar receitas por chef
+  - [ ] Pesquisar receitas por texto
+  - [ ] Pesquisar receitas por chef e texto
 - [ ] Deletes das entidades
 - [ ] Controllers entre endpoints e repositórios
-- [ ] Testes
-- [ ] Automação de testes com GitHub Actions
 - [ ] Documentação
 - [ ] Admin criado na primeira execução
 - [ ] Autenticação

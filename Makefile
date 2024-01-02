@@ -1,5 +1,17 @@
 .PHONY: startdb stopdb dblogs migrate run
 
+################################################################################
+#                              I M P O R T A N T                               #
+#                                                                              #
+# Make sure you create a Python virtual environment and install the project    #
+# dependencies before running any target, or some tools may not work properly. #
+#                                                                              #
+#  $ python3 -m venv env                                                       #
+#  $ source env/bin/activate                                                   #
+#  $ pip install -r requirements.txt                                           #
+#                                                                              #
+################################################################################
+
 run:
 	uvicorn main:app --reload
 

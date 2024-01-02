@@ -8,6 +8,9 @@ app = FastAPI()
 app.include_router(users.router)
 app.include_router(recipes.router)
 
+@app.get('/', tags=['Ping'])
+async def ping():
+    return { 'message': 'pong' }
 
 if __name__ == "__main__":
     settings = get_settings()
