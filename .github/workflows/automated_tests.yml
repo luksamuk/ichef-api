@@ -15,7 +15,7 @@ jobs:
       DATABASE_NAME: testdb
       DATABASE_USER: postgres
       DATABASE_PASSWORD: postgres
-      DATABASE_HOST: postgresql
+      DATABASE_HOST: localhost
       DATABASE_PORT: 5432
       API_PORT: 8000
     
