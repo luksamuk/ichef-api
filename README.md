@@ -195,7 +195,9 @@ pytest
   - [x] Autenticação via JWT
   - [x] Criação de receita através do usuário da sessão atual
   - [x] Admin criado na primeira execução
+  - [ ] Adicionar testes de autenticação
   - [ ] Atualizar testes para usar autenticação
+  - [ ] Permitir alterações quando o usuário é admin
 - [ ] Deletes das entidades
   - [ ] Desativação de usuários
 	- [ ] Documentação para remoção do usuário `admin@admin.com`

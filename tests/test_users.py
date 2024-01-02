@@ -16,6 +16,7 @@ def is_valid_uuid(val: str) -> bool:
     except ValueError:
         return False
 
+jwt: str | None = None
 
 payloads = {
     "admin": {
@@ -53,9 +54,23 @@ def check_response_corresponds_payload(response, payload):
     assert response["is_admin"] == payload["is_admin"]
     assert is_valid_uuid(response["id"])
 
+def admin_headers():
+    return { "Authorization": "Bearer " + jwt }
+
+@pytest.fixture
+def admin_login():
+    global jwt
+    if jwt is None:
+        payload = { "email": "admin@admin.com", "password": "admin" }
+        response = client.post('/auth/token', json=payload)
+        assert response.status_code == 200
+        json = response.json()
+        assert "access_token" in json
+        jwt = json["access_token"]
+
 
 @pytest.mark.dependency()
-def test_create_admin():
+def test_create_admin(admin_login):
     payload = payloads["admin"]
     response = client.post('/users', json=payload)
     assert response.status_code == 200
@@ -68,7 +83,7 @@ def test_create_admin():
 
 
 @pytest.mark.dependency()
-def test_create_chef():
+def test_create_chef(admin_login):
     payload = payloads["chef"]
     response = client.post('/users', json=payload)
     assert response.status_code == 200
@@ -81,8 +96,14 @@ def test_create_chef():
 
 
 @pytest.mark.dependency(depends=["test_create_admin", "test_create_chef"])
-def test_list_users():
+def test_list_users(admin_login):
+    # Do not allow listing users without credentials
     response = client.get('/users')
+    assert response.status_code == 403
+    assert "detail" in response.json()
+
+    # Perform listing
+    response = client.get('/users', headers=admin_headers())
     assert response.status_code == 200
     res = response.json()
     
@@ -110,27 +131,45 @@ def test_list_users():
 
 
 @pytest.mark.dependency(depends=["test_create_admin", "test_create_chef"])
-def test_recover_user():
+def test_recover_user(admin_login):
     for _, payload in payloads.items():
-        # Recover user by e-mail
+        # Do not allow recovering users by e-mail without authentication
         response = client.get('/users/email/' + payload["email"])
+        assert response.status_code == 403
+        assert "detail" in response.json()
+        
+        # Recover user by e-mail
+        response = client.get(
+            '/users/email/' + payload["email"],
+            headers=admin_headers(),
+        )
         assert response.status_code == 200
         check_response_corresponds_payload(response.json(), payload)
 
         # Recover same user, this time by ID
         id = response.json()["id"]
+
+        # Do not allow recovering users by id without authentication
         response2 = client.get('/users/' + id)
+        assert response2.status_code == 403
+        assert "detail" in response2.json()
+        
+        # Recover user with credentials
+        response2 = client.get('/users/' + id, headers=admin_headers())
         assert response2.status_code == 200
         check_response_corresponds_payload(response2.json(), payload)
 
 
 @pytest.mark.dependency(depends=["test_list_users", "test_recover_user"])
-def test_update_user():
+def test_update_user(admin_login):
     # We'll modify the users, so any recovery/listing tests
     # need to be finished at this point
     for _, payload in payloads.items():
         # Fetch old user by e-mail
-        response = client.get('/users/email/' + payload["email"])
+        response = client.get(
+            '/users/email/' + payload["email"],
+            headers=admin_headers(),
+        )
         assert response.status_code == 200
         orig_user = response.json()
         check_response_corresponds_payload(orig_user, payload)
@@ -145,9 +184,18 @@ def test_update_user():
             "is_admin": not orig_user["is_admin"],
         }
 
+        # Do not allow updating anything without credentials
+        response = client.put(
+            route,
+            json={ "name": alt_user["name"] },
+        )
+        assert response.status_code == 403
+        assert "detail" in response.json()
+
         # Update name
         response = client.put(
             route,
+            headers=admin_headers(),
             json={ "name": alt_user["name"] },
         )
         assert response.status_code == 200
@@ -158,6 +206,7 @@ def test_update_user():
         # Update admin status
         response = client.put(
             route,
+            headers=admin_headers(),
             json={ "is_admin": alt_user["is_admin"] },
         )
         assert response.status_code == 200
@@ -168,6 +217,7 @@ def test_update_user():
         # Update password
         response = client.put(
             route,
+            headers=admin_headers(),
             json={
                 "old_password": payload["password"],
                 "password": alt_user["password"],
@@ -180,6 +230,7 @@ def test_update_user():
         # Do not allow changing password if old password was not provided.
         response = client.put(
             route,
+            headers=admin_headers(),
             json={ "password": "moK2tza_yTdKj5HM4U8sZUjx3KRrAYS2" },
         )
         assert response.status_code == 401
@@ -188,6 +239,7 @@ def test_update_user():
         # Do not allow changing password if old password is incorrect.
         response = client.put(
             route,
+            headers=admin_headers(),
             json={
                 "old_password": "incorrectpassword",
                 "password": "aKJaIJET4RHSOjaG70xtZ4IzTwcJP3gb",
@@ -199,6 +251,7 @@ def test_update_user():
         # Do not allow changing chef status.
         response = client.put(
             route,
+            headers=admin_headers(),
             json={ "is_chef": not orig_user["is_chef"] },
         )
         assert response.status_code == 400
@@ -207,6 +260,7 @@ def test_update_user():
         # Do not allow changing e-mail.
         response = client.put(
             route,
+            headers=admin_headers(),
             json={ "email": "weirdmail@weird.com" },
         )
         assert response.status_code == 400
@@ -214,11 +268,11 @@ def test_update_user():
 
 @pytest.mark.skip(reason="Unimplemented")
 @pytest.mark.dependency(depends=["test_update_user"])
-def test_disable_user():
+def test_disable_user(admin_login):
     pass
 
 @pytest.mark.skip(reason="Unimplemented")
 @pytest.mark.dependency(depends=["test_disable_user"])
-def test_remove_user():
+def test_remove_user(admin_login):
     pass
 
