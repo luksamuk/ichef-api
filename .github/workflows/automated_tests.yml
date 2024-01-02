@@ -51,13 +51,16 @@ jobs:
           python-version: "3.11"
           
       - name: Install Python dependencies
-        run: pip install pytest pytest-md pytest-emoji
+        run: pip install pytest pytest-md pytest-emoji alembic
         
       - name: Checkout repository
         uses: actions/checkout@v3
           
       - name: Install requirements
         run: pip install -r requirements.txt
+
+      - name: Run migrations
+        run: alembic upgrade head
         
       - name: Run Pytest
         uses: pavelzw/pytest-action@v2
