@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime, time, timedelta
 import uuid
 
-from db import DatabaseModel
+from db.base import DatabaseModel
 
 class User(DatabaseModel):
     __tablename__ = 'users'

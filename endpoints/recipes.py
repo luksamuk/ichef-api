@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-import db
+import db.connection as db
 import repository.recipes as repository
 import schemas.recipes as schema
 from uuid import UUID

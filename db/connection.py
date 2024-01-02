@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, Column, DateTime
 from datetime import datetime
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 from settings import get_settings
 
 def make_connection_string() -> str:
@@ -19,13 +19,6 @@ def make_engine(echo=False):
 engine = make_engine(echo=True)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-DeclarativeBase = declarative_base()
-
-class DatabaseModel(DeclarativeBase):
-    __abstract__ = True
-    created_at = Column(DateTime, default=datetime.now, index=True)
-    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
 def make_session():
     db = SessionLocal()

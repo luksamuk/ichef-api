@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID, TSVECTOR
 from datetime import datetime, time, timedelta
 import uuid
 
-from db import DatabaseModel
+from db.base import DatabaseModel
 
 class Recipe(DatabaseModel):
     __tablename__ = 'recipes'

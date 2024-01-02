@@ -19,7 +19,7 @@ Abaixo há uma descrição rápida dos diretórios e arquivos principais do proj
 - `util`: Utilitários variados, como funções de encriptação.
 - `tests`: Módulo e arquivos relacionados a testes.
 - `main.py`: Ponto de entrada principal do projeto.
-- `db.py`: Módulo de configuração de conexão e persistência genérica com banco de dados.
+- `db`: Módulo de configuração de conexão e persistência genérica com banco de dados.
 - `settings.py`: Módulo relacionado a leitura de configurações de arquivos `.env` e/ou variáveis de ambiente.
 
 ## Executando o projeto
@@ -115,6 +115,8 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [x] Recuperar usuário por ID
   - [x] Recuperar usuário por e-mail
   - [x] Atualizar usuário
+- [ ] Reorganizar arquivos avulsos
+- [ ] Instruções de instalação Pytest / Alembic
 - [ ] Controllers entre endpoints e repositórios
   - [ ] Controller de usuários
   - [ ] Controller de receitas
