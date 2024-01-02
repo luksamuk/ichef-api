@@ -103,18 +103,17 @@ def test_list_users():
         check_response_valid(elt, payload)
 
 
-@pytest.mark.dependency(depends=["test_create_chef"])
+@pytest.mark.dependency(depends=["test_create_admin", "test_create_chef"])
 def test_recover_user():
-    payload = payloads["chef"]
-    
-    # Recover user by e-mail
-    response = client.get('/users/email/' + payload["email"])
-    assert response.status_code == 200
-    check_response_valid(response.json(), payload)
+    for payload in payloads:
+        # Recover user by e-mail
+        response = client.get('/users/email/' + payload["email"])
+        assert response.status_code == 200
+        check_response_valid(response.json(), payload)
 
-    # Recover same user, this time by ID
-    id = response.json()["id"]
-    response2 = client.get('/users/' + id)
-    assert response2.status_code == 200
-    check_response_valid(response2.json(), payload)
+        # Recover same user, this time by ID
+        id = response.json()["id"]
+        response2 = client.get('/users/' + id)
+        assert response2.status_code == 200
+        check_response_valid(response2.json(), payload)
 
