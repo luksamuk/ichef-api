@@ -20,14 +20,14 @@ def is_valid_uuid(val: str) -> bool:
 payloads = {
     "admin": {
 	"name": "Admin Test",
-	"email": "admin@admin.com",
+	"email": "admin@test.com",
 	"password": "PKPF1wyLhpG3CSL_ND4xg8EJowi-vhzK",
 	"is_chef": False,
 	"is_admin": True,
     },
     "chef": {
 	"name": "Chef Test",
-	"email": "chef@chef.com",
+	"email": "chef@test.com",
 	"password": "uyMP28LJB5rKK6gZ85qJAoLoZUj17bSU",
 	"is_chef": True,
 	"is_admin": False,
@@ -93,11 +93,11 @@ def test_list_users():
     found_chef = False
     for elt in res:
         payload = {}
-        if elt["email"] == "admin@admin.com":
+        if elt["email"] == "admin@test.com":
             assert not found_admin
             found_admin = True
             payload = payloads["admin"]
-        elif elt["email"] == "chef@chef.com":
+        elif elt["email"] == "chef@test.com":
             assert not found_chef
             found_chef = True
             payload = payloads["chef"]
