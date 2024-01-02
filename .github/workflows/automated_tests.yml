@@ -66,6 +66,6 @@ jobs:
         uses: pavelzw/pytest-action@v2
         with:
           emoji: false
-          verbose: false
+          verbose: true
           job-summary: true
 
