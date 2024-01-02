@@ -116,6 +116,20 @@ alembic upgrade head
 >
 > Além disso, você poderá encontrar outros comandos e configurações analisando os arquivos `Makefile`, `docker-compose-dev.yml` e `.env`.
 
+### Usuário administrador padrão
+
+Após a primeira execução, será criado um administrador padrão com as seguintes características:
+
+```bash
+Nome: Admin
+E-mail: admin@admin.com
+Senha: admin
+Chef: Não
+Admin: Sim
+```
+
+Você poderá utilizar este usuário para realizar testes e configuração inicial.
+
 ### Executando a aplicação
 
 Para iniciar a aplicação em modo debug, posto que o banco de dados esteja em execução e as migrations tenham sido executadas, você poderá usar o seguinte comando:
@@ -180,10 +194,11 @@ pytest
 - [ ] Autenticação
   - [x] Autenticação via JWT
   - [x] Criação de receita através do usuário da sessão atual
-  - [ ] Admin criado na primeira execução
+  - [x] Admin criado na primeira execução
   - [ ] Atualizar testes para usar autenticação
 - [ ] Deletes das entidades
   - [ ] Desativação de usuários
+	- [ ] Documentação para remoção do usuário `admin@admin.com`
   - [ ] Remoção de receitas
 - [ ] Testes (pt. 3)
   - [ ] Paginação de listagem

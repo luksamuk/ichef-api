@@ -17,6 +17,7 @@ run:
 
 migrate:
 # Create your migration with "alembic revision --autogenerate -m 'Migration name'"
+# To rollback one migration, user "alembic downgrade -1"
 	alembic upgrade head
 
 startdb:
