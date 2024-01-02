@@ -41,3 +41,4 @@ async def find_user_by_email(user_email: str, db: Session = Depends(db.make_sess
 @router.put('/{user_uuid}', response_model=schema.User)
 async def update_user(user_uuid: UUID, payload: schema.UserUpdate, db: Session = Depends(db.make_session)):
     return controller.update_user(db, user_uuid, payload)
+

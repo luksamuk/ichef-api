@@ -40,6 +40,8 @@ def check_response_valid(response):
     assert "is_chef" in response
     assert "is_admin" in response
     assert "id" in response
+    assert "created_at" in response
+    assert "updated_at" in response
     assert "password" not in response
     assert "pw_hash" not in response
 

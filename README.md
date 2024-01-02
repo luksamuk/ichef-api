@@ -149,7 +149,7 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [x] Controller de usuários
   - [x] Controller de receitas
 - [ ] Testes (pt. 2)
-  - [ ] Criar receita
+  - [x] Criar receita
   - [ ] Atualizar receita
   - [ ] Pesquisar receitas por chef
   - [ ] Pesquisar receitas por texto
