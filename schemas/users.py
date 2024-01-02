@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 from datetime import datetime
 from uuid import UUID
 
@@ -12,6 +13,12 @@ class UserCommon(BaseModel):
 
 class UserCreate(UserCommon):
     password: str
+
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    is_admin: Optional[bool] = None
+    old_password: Optional[str] = None
+    password: Optional[str] = None
 
 class User(UserCommon):
     id: UUID

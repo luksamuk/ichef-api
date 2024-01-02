@@ -11,6 +11,10 @@ class RecipeCommon(BaseModel):
 class RecipeCreate(RecipeCommon):
     pass
 
+class RecipeUpdate(BaseModel):
+    title: Optional[str] = None
+    text: Optional[str] = None
+
 class Recipe(RecipeCommon):
     id: UUID
     created_at: datetime

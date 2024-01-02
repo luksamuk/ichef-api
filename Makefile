@@ -1,7 +1,7 @@
 .PHONY: startdb stopdb dblogs migrate run
 
 run:
-	uvicorn teste_workalove.main:app --reload
+	uvicorn main:app --reload
 
 migrate:
 # Create your migration with "alembic revision --autogenerate -m 'Migration name'"

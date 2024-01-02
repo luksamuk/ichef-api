@@ -1,4 +1,4 @@
-# teste-tecnico-workalove
+# Teste Técnico Workalove
 
 ## Requisitos
 
@@ -16,7 +16,7 @@ Abaixo há uma descrição rápida dos diretórios e arquivos principais do proj
 - `model`: Reúne os models, portanto sendo diretamente relacionado à persistência no banco de dados.
 - `repository`: Reúne estruturas relacionadas a consulta e armazenamento no banco de dados, como queries realizadas via ORM.
 - `schemas`: Reúne estruturas representacionais (DTOs) para envio e recebimento na API, que podem ser mapeadas para models, dependendo da situação.
-- `teste_workalove`: Ponto de entrada principal do projeto.
+- `main.py`: Ponto de entrada principal do projeto.
 - `util`: Utilitários variados, como funções de encriptação.
 - `db.py`: Módulo de configuração de conexão e persistência genérica com banco de dados.
 - `settings.py`: Módulo relacionado a leitura de configurações de arquivos `.env` e/ou variáveis de ambiente.
@@ -84,7 +84,7 @@ Para iniciar a aplicação em modo debug, posto que o banco de dados esteja em e
 make run
 
 # Ou...
-uvicorn teste_workalove.main:app --reload
+uvicorn main:app --reload
 ```
 
 ### Usuários
@@ -99,6 +99,8 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
 
 ## Checklist
 
+- [x] Updates das entidades
+- [ ] Deletes das entidades
 - [ ] Controllers entre endpoints e repositórios
 - [ ] Testes
 - [ ] Automação de testes com GitHub Actions

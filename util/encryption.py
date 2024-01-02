@@ -7,4 +7,3 @@ def gen_password_hash(pw: str) -> str:
 
 def verify_password_hash(hash: str, password: str) -> bool:
     return hasher.verify(hash, password)
-
