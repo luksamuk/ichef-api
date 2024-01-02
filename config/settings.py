@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     database_host: str
     database_port: str
     api_port: int
+    jwt_secret: str
+    jwt_algorithm: str
+    jwt_expiry_seconds: int
     
     model_config = SettingsConfigDict(env_file='.env')
 

@@ -67,6 +67,19 @@ Ou, no Windows:
 env\bin\activate.ps1
 ```
 
+### Configurando as variáveis de ambiente (`.env`)
+
+Copie o arquivo `.env.example` para `.env`, no mesmo diretório. Você poderá alterar as variáveis de ambiente a gosto, mas lembre-se de que elas poderão influenciar nos próximos passos.
+
+Uma das variáveis precisa necessariamente ser alterada `JWT_SECRET`. Você poderá gerar um novo _secret_ usando o código em Python a seguir, pelo console:
+
+```python
+import os
+import binascii
+
+binascii.hexlify(os.urandom(24))
+```
+
 ### Configurando o banco de dados
 
 Caso você esteja executando o projeto pela primeira vez, é necessário configurar o banco de dados.
@@ -87,8 +100,6 @@ Você poderá aguardar até que o PgAdmin 4 fique pronto e acessá-lo na porta `
 > O usuário e a senha do banco de dados são iguais, sendo seu valor 'postgres'.
 >
 > Se você estiver usando o PgAdmin4, certifique-se de conectar ao banco de dados usando o host e a porta `postgresql:5432`, já que o banco de dados estará acessível dentro da rede bridge criada pelo Docker.
-
-Em seguida, copie o arquivo `.env.example` para `.env`, no mesmo diretório.
 
 No PgAdmin4 ou similar, Crie um banco de dados chamado `teste-workalove`, ou um outro nome de acordo com o arquivo `.env`.
 
@@ -139,7 +150,7 @@ pytest
 ```
 
 > _NOTA:_ Para garantir que você esteja executando o Pytest do VirtualEnv, verifique a localização do binário usando `which pytest` no Linux.
->
+
 > _NOTA:_ Este repositório também possui testes automatizados via GitHub Actions. Os testes podem ser executados manualmente, após um Pull Request ou após um commit em qualquer branch.
 
 ## Licenciamento
