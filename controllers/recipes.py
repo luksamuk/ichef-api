@@ -2,6 +2,8 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 import uuid
 
+from util.auth import jwt_decode
+from schemas.auth import JWTPayload
 from model import recipes as model
 from schemas import recipes as schema
 from repository import recipes as repository
@@ -18,18 +20,18 @@ def get_recipes(db: Session, offset: int = 0, limit: int = 100) -> list[model.Re
     return repository.get_recipes(db, offset, limit)
 
 
-def create_recipe(db: Session, payload: schema.RecipeCreate) -> model.Recipe:
-    # TODO: Instead of receiving the chef's ID, use current user, if and only
-    # if the current user is a chef
-    chef = users_repository.get_user(db, id=payload.chef_id)
-    if chef is None:
-        raise HTTPException(status_code=404, detail='Chef not found')
-    if not chef.is_chef:
-        raise HTTPException(status_code=400, detail='Chef ID does not belong to a chef')
+def create_recipe(db: Session, token: str, payload: schema.RecipeCreate) -> model.Recipe:
+    auth_data: JWTPayload = jwt_decode(token)
+    
+    if users_repository.get_user(db, id=auth_data.user_id) is None:
+        raise HTTPException(status_code=500, detail='Could not find current user data')
+    
+    if not auth_data.is_chef:
+        raise HTTPException(status_code=400, detail='Current user is not a chef')
     
     db_model = model.Recipe(
         title = payload.title,
-        chef_id = payload.chef_id,
+        chef_id = uuid.UUID(auth_data.user_id),
         text = payload.text,
     )
     return repository.create_recipe(db, model=db_model)

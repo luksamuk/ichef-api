@@ -29,7 +29,7 @@ async def find_recipe_by_id(recipe_uuid: UUID, db: Session = Depends(db.make_ses
 async def create_recipe(token: Annotated[str, Depends(JWTBearer())],
                         payload: schema.RecipeCreate,
                         db: Session = Depends(db.make_session)):
-    return controller.create_recipe(db, payload)
+    return controller.create_recipe(db, token, payload)
 
 
 @router.post('/search', response_model=list[schema.Recipe])

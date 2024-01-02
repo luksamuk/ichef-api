@@ -4,11 +4,11 @@ from datetime import datetime
 from uuid import UUID
 
 class RecipeCommon(BaseModel):
-    chef_id: UUID
     title: str
     text: str
 
 class RecipeCreate(RecipeCommon):
+    # chef_id is deduced from auth data
     pass
 
 class RecipeUpdate(BaseModel):
@@ -17,6 +17,7 @@ class RecipeUpdate(BaseModel):
 
 class Recipe(RecipeCommon):
     id: UUID
+    chef_id: UUID
     created_at: datetime
     updated_at: datetime
 

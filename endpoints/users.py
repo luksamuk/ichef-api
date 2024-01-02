@@ -8,8 +8,6 @@ import controllers.users as controller
 import schemas.users as schema
 from uuid import UUID
 
-from util.auth import jwt_decode
-
 import repository.users as repository
 
 router = APIRouter(
