@@ -113,7 +113,7 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [x] Recuperar listas de usuários
   - [x] Recuperar usuário por ID
   - [x] Recuperar usuário por e-mail
-  - [ ] Atualizar usuário
+  - [x] Atualizar usuário
   - [ ] Desativar usuário
   - [ ] Remover usuário
   - [ ] Criar receita

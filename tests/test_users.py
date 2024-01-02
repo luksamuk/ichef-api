@@ -34,7 +34,7 @@ payloads = {
     }
 }
 
-def check_response_valid(response, payload):
+def check_response_valid(response):
     assert "name" in response
     assert "email" in response
     assert "is_chef" in response
@@ -42,7 +42,9 @@ def check_response_valid(response, payload):
     assert "id" in response
     assert "password" not in response
     assert "pw_hash" not in response
-    
+
+def check_response_corresponds_payload(response, payload):
+    check_response_valid(response)
     assert response["name"] == payload["name"]
     assert response["email"] == payload["email"]
     assert response["is_chef"] == payload["is_chef"]
@@ -60,7 +62,7 @@ def test_create_admin():
     )
 
     assert response.status_code == 200
-    check_response_valid(response.json(), payload)
+    check_response_corresponds_payload(response.json(), payload)
 
 
 @pytest.mark.dependency()
@@ -73,7 +75,7 @@ def test_create_chef():
     )
 
     assert response.status_code == 200
-    check_response_valid(response.json(), payload)
+    check_response_corresponds_payload(response.json(), payload)
 
 
 @pytest.mark.dependency(depends=["test_create_admin", "test_create_chef"])
@@ -100,7 +102,7 @@ def test_list_users():
         else:
             raise Exception('Unknown entity. Is the database clean?')
 
-        check_response_valid(elt, payload)
+        check_response_corresponds_payload(elt, payload)
 
 
 @pytest.mark.dependency(depends=["test_create_admin", "test_create_chef"])
@@ -109,11 +111,110 @@ def test_recover_user():
         # Recover user by e-mail
         response = client.get('/users/email/' + payload["email"])
         assert response.status_code == 200
-        check_response_valid(response.json(), payload)
+        check_response_corresponds_payload(response.json(), payload)
 
         # Recover same user, this time by ID
         id = response.json()["id"]
         response2 = client.get('/users/' + id)
         assert response2.status_code == 200
-        check_response_valid(response2.json(), payload)
+        check_response_corresponds_payload(response2.json(), payload)
+
+
+@pytest.mark.dependency(depends=["test_list_users", "test_recover_user"])
+def test_update_user():
+    # We'll modify the users, so any recovery/listing tests
+    # need to be finished at this point
+    for _, payload in payloads.items():
+        # Fetch old user by e-mail
+        response = client.get('/users/email/' + payload["email"])
+        assert response.status_code == 200
+        orig_user = response.json()
+        check_response_corresponds_payload(orig_user, payload)
+
+        route = '/users/' + orig_user["id"]
+
+        alt_user = {
+            "name": orig_user["name"] + ' (changed)',
+            "email": orig_user["email"],
+            "password": "DE_gf-IM2VoLvBPZozufqOHNWRMo33rg",
+            "is_chef": orig_user["is_chef"],
+            "is_admin": not orig_user["is_admin"],
+        }
+
+        # Update name
+        response = client.put(
+            route,
+            json={ "name": alt_user["name"] },
+        )
+        assert response.status_code == 200
+        new_user = response.json()
+        check_response_valid(new_user)
+        assert new_user["name"] == alt_user["name"]
+
+        # Update admin status
+        response = client.put(
+            route,
+            json={ "is_admin": alt_user["is_admin"] },
+        )
+        assert response.status_code == 200
+        new_user = response.json()
+        check_response_valid(new_user)
+        assert new_user["is_admin"] == alt_user["is_admin"]
+
+        # Update password
+        response = client.put(
+            route,
+            json={
+                "old_password": payload["password"],
+                "password": alt_user["password"],
+            },
+        )
+        assert response.status_code == 200
+        new_user = response.json()
+        check_response_valid(new_user)
+
+        # Do not allow changing password if old password was not provided.
+        response = client.put(
+            route,
+            json={ "password": "moK2tza_yTdKj5HM4U8sZUjx3KRrAYS2" },
+        )
+        assert response.status_code == 401
+        assert "detail" in response.json()
+        
+        # Do not allow changing password if old password is incorrect.
+        response = client.put(
+            route,
+            json={
+                "old_password": "incorrectpassword",
+                "password": "aKJaIJET4RHSOjaG70xtZ4IzTwcJP3gb",
+            },
+        )
+        assert response.status_code == 401
+        assert "detail" in response.json()
+        
+        # Do not allow changing chef status.
+        response = client.put(
+            route,
+            json={ "is_chef": not orig_user["is_chef"] },
+        )
+        assert response.status_code == 400
+        assert "detail" in response.json()
+        
+        # Do not allow changing e-mail.
+        response = client.put(
+            route,
+            json={ "email": "weirdmail@weird.com" },
+        )
+        assert response.status_code == 400
+        assert "detail" in response.json()
+
+@pytest.mark.skip(reason="Unimplemented")
+@pytest.mark.dependency(depends=["test_update_user"])
+def test_disable_user():
+    pass
+
+@pytest.mark.skip(reason="Unimplemented")
+@pytest.mark.dependency(depends=["test_disable_user"])
+def test_remove_user():
+    pass
 
