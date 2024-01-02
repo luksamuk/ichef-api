@@ -166,6 +166,10 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [ ] Remover usuário
   - [ ] Deletar receita
 - [ ] Documentação
-
+  - [ ] Ajustar retornos de rotas no Swagger
+  - [ ] Ajustar nome da API no Swagger
+- [ ] Conteinerização
+  - [ ] Dockerfile e .dockerignore para a aplicação
+  - [ ] Arquivo Docker Compose para executar localmente
 
 
