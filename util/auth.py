@@ -14,7 +14,7 @@ def jwt_sign(data: User) -> TokenResponse:
         is_admin = data.is_admin,
         expires=time.time() + settings.jwt_expiry_seconds,
     )
-    token = jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+    token = jwt.encode(payload.model_dump(), settings.jwt_secret, algorithm=settings.jwt_algorithm)
     return TokenResponse(access_token=token)
 
 def jwt_decode(token: str) -> JWTPayload:

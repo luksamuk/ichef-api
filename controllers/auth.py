@@ -8,7 +8,7 @@ from util import encryption, auth
 from repository import users as users_repository
 
 def login(db: Session, payload: schema.Login) -> schema.TokenResponse:
-    user = repository.get_user_by_mail(db, payload.email)
+    user = users_repository.get_user_by_email(db, payload.email)
     if user is None:
         raise HTTPException(status_code=401, detail='Cannot login: User does not exist')
 

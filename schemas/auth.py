@@ -1,12 +1,12 @@
 from pydantic import BaseModel
 
-class JWTPayload:
+class JWTPayload(BaseModel):
     user_id: str
     is_chef: bool
     is_admin: bool
     expires: float
 
-class TokenResponse:
+class TokenResponse(BaseModel):
     access_token: str
 
 class Login(BaseModel):
