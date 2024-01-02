@@ -1,5 +1,6 @@
 from main import app
 from fastapi.testclient import TestClient
+import .test_util
 
 client = TestClient(app)
 
@@ -27,4 +28,6 @@ def test_create_user():
     assert res["is_admin"] == payload["is_admin"]
     assert "password" not in res
     assert "pw_hash" not in res
-
+    assert "id" in res
+    assert is_valid_uuid(res["id"])
+    
