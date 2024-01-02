@@ -47,7 +47,7 @@ Em seguida, instale as dependências:
 pip install -r requirements.txt
 ```
 
-### Instalando dependências
+### Instalando utilitários
 
 Para testar o projeto e executar migrations, você precisará instalar o Pytest e o Alembic:
 
