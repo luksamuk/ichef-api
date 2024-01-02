@@ -55,27 +55,27 @@ def check_response_corresponds_payload(response, payload):
 @pytest.mark.dependency()
 def test_create_admin():
     payload = payloads["admin"]
-    
-    response = client.post(
-        '/users',
-        json=payload,
-    )
-
+    response = client.post('/users', json=payload)
     assert response.status_code == 200
     check_response_corresponds_payload(response.json(), payload)
+
+    # Do not allow creating the same user again
+    response = client.post('/users', json=payload)
+    assert response.status_code == 409
+    assert "detail" in response.json()
 
 
 @pytest.mark.dependency()
 def test_create_chef():
     payload = payloads["chef"]
-
-    response = client.post(
-        '/users',
-        json=payload,
-    )
-
+    response = client.post('/users', json=payload)
     assert response.status_code == 200
     check_response_corresponds_payload(response.json(), payload)
+
+    # Do not allow creating the same user again
+    response = client.post('/users', json=payload)
+    assert response.status_code == 409
+    assert "detail" in response.json()
 
 
 @pytest.mark.dependency(depends=["test_create_admin", "test_create_chef"])
