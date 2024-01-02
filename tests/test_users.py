@@ -1,8 +1,14 @@
 from main import app
 from fastapi.testclient import TestClient
-import tests.test_util
 
 client = TestClient(app)
+
+def is_valid_uuid(val: str) -> bool:
+    try:
+        UUID(val)
+        return True
+    except ValueError:
+        return False
 
 def test_create_user():
     payload = {
