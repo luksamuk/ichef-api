@@ -12,6 +12,8 @@
 Abaixo há uma descrição rápida dos diretórios e arquivos principais do projeto. Para mais informações, veja a documentação da solução.
 
 - `alembic` e `alembic.ini`: Configurações e arquivos de migrations.
+- `config`: Módulo relacionado a leitura de configurações de arquivos `.env` e/ou variáveis de ambiente.
+- `controllers`: Módulo relacionado a controles de regras de negócio da aplicação.
 - `endpoints`: Reúne os endpoints REST da aplicação.
 - `model`: Reúne os models, portanto sendo diretamente relacionado à persistência no banco de dados.
 - `repository`: Reúne estruturas relacionadas a consulta e armazenamento no banco de dados, como queries realizadas via ORM.
@@ -19,7 +21,6 @@ Abaixo há uma descrição rápida dos diretórios e arquivos principais do proj
 - `util`: Utilitários variados, como funções de encriptação.
 - `tests`: Módulo e arquivos relacionados a testes.
 - `db`: Módulo de configuração de conexão e persistência genérica com banco de dados.
-- `config`: Módulo relacionado a leitura de configurações de arquivos `.env` e/ou variáveis de ambiente.
 - `main.py`: Ponto de entrada principal do projeto.
 
 ## Executando o projeto

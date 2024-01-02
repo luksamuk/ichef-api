@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 import db.connection as db
-import controller.users as controller
+import controllers.users as controller
 import schemas.users as schema
 from uuid import UUID
 

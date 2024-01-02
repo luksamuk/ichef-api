@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+import uuid
 
 from repository import users as repository
 from model import users as model

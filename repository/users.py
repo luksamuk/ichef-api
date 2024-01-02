@@ -4,7 +4,7 @@ import uuid
 
 from model import users as model
 from schemas import users as schema
-from util import encryption, validation
+from util import encryption
 
 
 def get_user(db: Session, id: uuid.UUID) -> model.User | None:
