@@ -153,10 +153,6 @@ pytest
 
 > _NOTA:_ Este repositório também possui testes automatizados via GitHub Actions. Os testes podem ser executados manualmente, após um Pull Request ou após um commit em qualquer branch.
 
-## Licenciamento
-
-Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
-
 ## Roadmap do projeto
 
 - [x] Pesquisa de receitas por texto e por Chef
@@ -182,6 +178,8 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [ ] Pesquisar receitas por texto
   - [ ] Pesquisar receitas por chef e texto
 - [ ] Autenticação
+  - [x] Autenticação via JWT
+  - [ ] Criação de receita através do usuário da sessão atual
   - [ ] Admin criado na primeira execução
   - [ ] Atualizar testes para usar autenticação
 - [ ] Deletes das entidades
@@ -199,4 +197,12 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [ ] Dockerfile e .dockerignore para a aplicação
   - [ ] Arquivo Docker Compose para executar localmente
 
+## Referências
 
+- [Guia de usuário do FastAPI](https://fastapi.tiangolo.com/tutorial/)
+- [Documentação do Pydantic](https://docs.pydantic.dev/latest/)
+- [Securing FastAPI with JWT Token-based Authentication](https://testdriven.io/blog/fastapi-jwt-auth/)
+
+## Licenciamento
+
+Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.

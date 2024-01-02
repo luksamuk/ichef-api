@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated
 from sqlalchemy.orm import Session
 
+from auth.bearers import JWTBearer
 import db.connection as db
 import repository.recipes as repository
 import controllers.recipes as controller
@@ -10,6 +12,7 @@ from uuid import UUID
 router = APIRouter(
     prefix='/recipes',
     tags=["Recipes"],
+    dependencies=[Depends(JWTBearer())],
 )
 
 @router.get('/', response_model=list[schema.Recipe])
@@ -23,7 +26,9 @@ async def find_recipe_by_id(recipe_uuid: UUID, db: Session = Depends(db.make_ses
 
 
 @router.post('/', response_model=schema.Recipe)
-async def create_recipe(payload: schema.RecipeCreate, db: Session = Depends(db.make_session)):
+async def create_recipe(token: Annotated[str, Depends(JWTBearer())],
+                        payload: schema.RecipeCreate,
+                        db: Session = Depends(db.make_session)):
     return controller.create_recipe(db, payload)
 
 

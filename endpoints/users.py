@@ -1,16 +1,21 @@
 from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated
 from sqlalchemy.orm import Session
 
+from auth.bearers import JWTBearer
 import db.connection as db
 import controllers.users as controller
 import schemas.users as schema
 from uuid import UUID
+
+from util.auth import jwt_decode
 
 import repository.users as repository
 
 router = APIRouter(
     prefix='/users',
     tags=["Users"],
+    dependencies=[Depends(JWTBearer())],
 )
 
 @router.get('/', response_model=list[schema.User])
