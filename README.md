@@ -2,7 +2,7 @@
 
 ## Requisitos
 
-- Um ambiente Linux-like;
+- Ambiente Linux ou PowerShell do Windows;
 - GNU Make (opcional);
 - Python 3.11 ou superior;
 - Docker instalado (de preferência com o usuário atual no grupo `docker`).
@@ -33,10 +33,37 @@ python3 -m venv env
 source env/bin/activate
 ```
 
+Ou, no Windows, você poderá executar:
+
+```ps1
+python3 -m venv env
+env\bin\activate.ps1
+```
+
 Em seguida, instale as dependências:
 
 ```bash
 pip install -r requirements.txt
+```
+
+### Instalando dependências
+
+Para testar o projeto e executar migrations, você precisará instalar o Pytest e o Alembic:
+
+```bash
+pip install pytest alembic
+```
+
+Caso você possua alguma dessas ferramentas instalada globalmente na sua máquina, você pode precisar recarregar o VirtualEnv:
+
+```bash
+source env/bin/activate
+```
+
+Ou, no Windows:
+
+```ps1
+env\bin\activate.ps1
 ```
 
 ### Configurando o banco de dados
@@ -116,7 +143,7 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [x] Recuperar usuário por e-mail
   - [x] Atualizar usuário
 - [x] Reorganizar arquivos avulsos
-- [ ] Instruções de instalação Pytest / Alembic
+- [x] Instruções de instalação Pytest / Alembic
 - [ ] Controllers entre endpoints e repositórios
   - [ ] Controller de usuários
   - [ ] Controller de receitas
