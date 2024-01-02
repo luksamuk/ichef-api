@@ -102,10 +102,11 @@ Esta aplicação possui testes E2E de API que testam requisições e retorno den
 
 Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
-## Checklist
+## Roadmap do projeto
 
+- [x] Pesquisa de receitas por texto e por Chef
 - [x] Updates das entidades
-- [ ] Testes
+- [x] Testes básicos e de usuário (pt. 1)
   - [x] Automação de testes com GitHub Actions
   - [x] Rota ping
   - [x] Criar chef
@@ -114,20 +115,25 @@ Este código é licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mai
   - [x] Recuperar usuário por ID
   - [x] Recuperar usuário por e-mail
   - [x] Atualizar usuário
-  - [ ] Desativar usuário
-  - [ ] Remover usuário
+- [ ] Controllers entre endpoints e repositórios
+  - [ ] Controller de usuários
+  - [ ] Controller de receitas
+- [ ] Autenticação
+  - [ ] Admin criado na primeira execução
+- [ ] Testes de receitas (pt. 1)
   - [ ] Criar receita
   - [ ] Atualizar receita
-  - [ ] Deletar receita
   - [ ] Pesquisar receitas por chef
   - [ ] Pesquisar receitas por texto
   - [ ] Pesquisar receitas por chef e texto
 - [ ] Deletes das entidades
-- [ ] Controllers entre endpoints e repositórios
+  - [ ] Desativação de usuários
+  - [ ] Remoção de receitas
+- [ ] Testes pt. 2
+  - [ ] Desativar usuário
+  - [ ] Remover usuário
+  - [ ] Deletar receita
 - [ ] Documentação
-- [ ] Admin criado na primeira execução
-- [ ] Autenticação
-- [x] Pesquisa de receitas por texto e por Chef
-- [ ] Desativação de usuários
-- [ ] Remoção de receitas
+
+
 
