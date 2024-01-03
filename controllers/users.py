@@ -2,6 +2,8 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 import uuid
 
+from util.auth import jwt_decode
+from schemas.auth import JWTPayload
 from repository import users as repository
 from model import users as model
 from schemas import users as schema
@@ -30,13 +32,19 @@ def get_chefs(db: Session, offset: int = 0, limit: int = 100) -> list[model.User
     return repository.get_chefs(db, offset, limit)
 
 
-def create_user(db: Session, payload: schema.UserCreate) -> model.User:
+def create_user(db: Session, token: str, payload: schema.UserCreate) -> model.User:
+    # An administrator can only be created by another administrator
+    auth_data: JWTPayload = jwt_decode(token)
+    if payload.is_admin and (not auth_data.is_admin):
+        raise HTTPException(
+            status_code=403,
+            detail='Only an administrator can create another administrator'
+        )
+    
     if repository.get_user_by_email(db, email=payload.email):
         raise HTTPException(status_code=409, detail='User already exists')
     
     hashed_password = encryption.gen_password_hash(payload.password)
-    # TODO: Criar um mapper
-    # TODO: Verificar se pode criar o usuário como admin de acordo com a sessão
     db_model = model.User(
         name=payload.name,
         email=payload.email,
@@ -47,12 +55,21 @@ def create_user(db: Session, payload: schema.UserCreate) -> model.User:
     return repository.create_user(db, model=db_model)
 
 
-def update_user(db: Session, id: uuid.UUID, payload: schema.UserUpdate) -> model.User:
+def update_user(db: Session, token: str, id: uuid.UUID, payload: schema.UserUpdate) -> model.User:
+    auth_data: JWTPayload = jwt_decode(token)
+    
     if (payload.password is None) and\
        (payload.name is None) and\
        (payload.is_admin is None):
         raise HTTPException(status_code=400, detail='Nothing needs to be changed')
 
+    # To update an user, you must either be an admin or the referred user
+    if (not auth_data.is_admin) or (str(id) != auth_data.user_id):
+        raise HTTPException(
+            status_code=403,
+            detail='A user can only be changed by an administrator or by themself'
+        )
+    
     db_model = repository.get_user(db, id)
     if db_model is None:
         raise HTTPException(status_code=404, detail='User not found')
