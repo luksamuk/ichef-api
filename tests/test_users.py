@@ -24,14 +24,12 @@ payloads = {
 	"email": "admin@test.com",
 	"password": "PKPF1wyLhpG3CSL_ND4xg8EJowi-vhzK",
 	"is_chef": False,
-	"is_admin": True,
     },
     "chef": {
 	"name": "Chef Test",
 	"email": "chef@test.com",
 	"password": "uyMP28LJB5rKK6gZ85qJAoLoZUj17bSU",
 	"is_chef": True,
-	"is_admin": False,
     }
 }
 
@@ -51,7 +49,6 @@ def check_response_corresponds_payload(response, payload):
     assert response["name"] == payload["name"]
     assert response["email"] == payload["email"]
     assert response["is_chef"] == payload["is_chef"]
-    assert response["is_admin"] == payload["is_admin"]
     assert is_valid_uuid(response["id"])
 
 def admin_headers():
@@ -82,6 +79,7 @@ def test_create_admin(admin_login):
     response = client.post('/users/admin', headers=admin_headers(), json=payload)
     assert response.status_code == 200
     check_response_corresponds_payload(response.json(), payload)
+    assert response.json()["is_admin"] == True
 
     # Do not allow creating the same user again
     response = client.post('/users/admin', headers=admin_headers(), json=payload)
@@ -91,10 +89,12 @@ def test_create_admin(admin_login):
 
 @pytest.mark.dependency()
 def test_create_chef(admin_login):
+    # Create chef
     payload = payloads["chef"]
     response = client.post('/users', json=payload)
     assert response.status_code == 200
     check_response_corresponds_payload(response.json(), payload)
+    assert response.json()["is_admin"] == False
 
     # Do not allow creating the same user again
     response = client.post('/users', json=payload)
