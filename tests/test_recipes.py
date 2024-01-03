@@ -270,7 +270,6 @@ def test_search_recipe_by_chef_and_text(admin_login, prepare_data):
     pass
 
 
-@pytest.mark.skip(reason="Unimplemented")
 @pytest.mark.dependency(depends=[
     "test_search_recipe_by_text",
     "test_search_recipe_by_chef",
@@ -285,8 +284,9 @@ def test_update_recipe(admin_login, prepare_data):
     assert isinstance(res, list)
     assert len(res) == 1
     recipe = res[0]
+    check_response_valid(recipe)
 
-    route = '/recipe/' + recipe["id"]
+    route = '/recipes/' + recipe["id"]
 
     # Do not allow changing anything if you're not logged in
     response = client.put(route, json={"title": "This Should Fail"})
@@ -311,7 +311,7 @@ def test_update_recipe(admin_login, prepare_data):
 
     # Change name and text as Admin
     response = client.put(route, headers=admin_headers(), json={
-        "name": "My Admin Recipe",
+        "title": "My Admin Recipe",
         "text": "This is an admin recipe."
     })
     assert response.status_code == 200
@@ -337,7 +337,7 @@ def test_update_recipe(admin_login, prepare_data):
 
     # Change name and text as chef
     response = client.put(route, headers=chef_headers(), json={
-        "name": "My Chef Recipe",
+        "title": "My Chef Recipe",
         "text": "This is a chef recipe."
     })
     assert response.status_code == 200
@@ -357,6 +357,7 @@ def test_delete_recipe(admin_login, prepare_data):
     assert isinstance(res, list)
     assert len(res) == 3
     recipe = res[0]
+    check_response_valid(recipe)
 
     route = '/recipes/' + recipe["id"]
     

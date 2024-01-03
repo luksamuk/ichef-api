@@ -8,7 +8,7 @@ settings = get_settings()
 
 app = FastAPI(
     title=settings.app_name,
-    summary='Teste técnico de backend para a Workalove',
+    summary='API iChef para chefs e cozinheiros',
     description='API REST para compartilhamento de receitas entre chefs e cozinheiros amadores.',
     version='1.0.0',
     contact={

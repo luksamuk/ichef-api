@@ -1,4 +1,4 @@
-# Teste Técnico Workalove: API iChef
+# API iChef
 
 Este projeto descreve uma API de compartilhamento de receitas entre chefs e cozinheiros amadores.
 
@@ -144,7 +144,7 @@ make startdb
 docker compose -f docker-compose-dev.yml up -d
 ```
 
-Isso iniciará o PostgreSQL 16.1 com um banco de dados chamado `teste-workalove`.
+Isso iniciará o PostgreSQL 16.1 com um banco de dados chamado `ichef`.
 
 Você poderá aguardar até que o PgAdmin 4 fique pronto e acessá-lo na porta `5433` do seu computador, ou conectar à porta `5432` com o gerenciador de banco de dados do seu gosto.
 

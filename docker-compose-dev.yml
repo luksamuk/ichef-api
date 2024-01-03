@@ -4,7 +4,7 @@ version: "3"
 services:
   postgresql:
     environment:
-      - POSTGRES_DB=teste-workalove
+      - POSTGRES_DB=ichef
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     image: postgres:16.1-alpine
@@ -13,7 +13,7 @@ services:
     networks:
       - pgsql-network
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -d teste-workalove -h localhost -p 5432'"]
+      test: ["CMD-SHELL", "sh -c 'pg_isready -d ichef -h localhost -p 5432'"]
       interval: 10s
       timeout: 3s
       retries: 3
