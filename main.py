@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from endpoints import users, recipes, auth
 from config.settings import get_settings
+from schemas.general import PingModel
 
 settings = get_settings()
 
@@ -25,9 +26,11 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(recipes.router)
 
-@app.get('/', tags=['Ping'])
+
+@app.get('/ping', tags=['Healthcheck'], response_model=PingModel)
 async def ping():
-    return { 'message': 'pong' }
+    return PingModel(message='pong')
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=settings.api_port)

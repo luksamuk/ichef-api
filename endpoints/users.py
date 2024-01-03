@@ -6,6 +6,7 @@ from auth.bearers import JWTBearer
 import db.connection as db
 import controllers.users as controller
 import schemas.users as schema
+from schemas.general import HTTPErrorModel
 from uuid import UUID
 
 import repository.users as repository
@@ -24,28 +25,88 @@ async def get_users(page: int = 0, size: int = 100, db: Session = Depends(db.mak
 async def get_chefs(page: int = 0, size: int = 100, db: Session = Depends(db.make_session)):
     return controller.get_chefs(db, offset=size * page, limit=size)
 
-@router.post('/', response_model=schema.User)
+
+@router.post('/',
+             response_model=schema.User,
+             responses={
+                 409: {
+                     "model": HTTPErrorModel,
+                     "description": "User already exists"
+                 }
+             })
 async def create_user(payload: schema.UserCreate,
                       db: Session = Depends(db.make_session)):
     return controller.create_user(db, None, payload, False)
 
-@router.post('/admin', response_model=schema.User)
+
+@router.post('/admin',
+             response_model=schema.User,
+             responses={
+                 403: {
+                     "model": HTTPErrorModel,
+                     "description": "Session user is not an administrator",
+                 },
+                 409: {
+                     "model": HTTPErrorModel,
+                     "description": "User already exists"
+                 }
+            })
 async def create_admin_user(token: Annotated[str, Depends(JWTBearer())],
                       payload: schema.UserCreate,
                       db: Session = Depends(db.make_session)):
     return controller.create_user(db, token, payload, True)
 
-@router.get('/{user_uuid}', response_model=schema.User, dependencies=[Depends(JWTBearer())])
+
+@router.get('/{user_uuid}',
+            response_model=schema.User,
+            dependencies=[Depends(JWTBearer())],
+            responses={
+                404: {
+                    "model": HTTPErrorModel,
+                    "description": "User not found"
+                }
+            })
 async def find_user_by_id(user_uuid: UUID, db: Session = Depends(db.make_session)):
     return controller.get_user(db, id=user_uuid)
 
 
-@router.get('/email/{user_email}', response_model=schema.User, dependencies=[Depends(JWTBearer())])
+@router.get('/email/{user_email}',
+            response_model=schema.User,
+            dependencies=[Depends(JWTBearer())],
+            responses={
+                404: {
+                    "model": HTTPErrorModel,
+                    "description": "User not found"
+                }
+            })
 async def find_user_by_email(user_email: str, db: Session = Depends(db.make_session)):
     return controller.get_user_by_email(db, email=user_email)
 
 
-@router.put('/{user_uuid}', response_model=schema.User)
+@router.put('/{user_uuid}',
+            response_model=schema.User,
+            responses={
+                400: {
+                    "model": HTTPErrorModel,
+                    "description": "No changeable fields were provided, or the password is invalid",
+                },
+                401: {
+                    "model": HTTPErrorModel,
+                    "description": "Provided old password is incorrect",
+                },
+                403: {
+                    "model": HTTPErrorModel,
+                    "description": "Session user is not themself nor an administrator",
+                },
+                404: {
+                    "model": HTTPErrorModel,
+                    "description": "User not found",
+                },
+                409: {
+                    "model": HTTPErrorModel,
+                    "description": "User already exists",
+                }
+            })
 async def update_user(token: Annotated[str, Depends(JWTBearer())],
                       user_uuid: UUID,
                       payload: schema.UserUpdate,

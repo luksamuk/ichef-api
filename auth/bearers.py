@@ -29,8 +29,6 @@ class JWTBearer(HTTPBearer):
             payload = jwt_decode(jwt)
             return jwt_validate(payload)
         except:
-            # TODO: Log exception to console. We never know what's going
-            # to happen
             return False
 
 

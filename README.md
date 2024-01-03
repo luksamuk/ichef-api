@@ -135,7 +135,12 @@ python3 main.py
 
 ## Uso do projeto
 
-Este projeto trata-se de uma API REST. A documentação dos _endpoints_ existentes pode ser vista ao acessar a URL `http://localhost:8000/docs`, que dará acesso à interface do Swagger.
+Este projeto trata-se de uma API REST, cuja autenticação se dá via Bearer Token JWT.
+
+A documentação dos _endpoints_ existentes pode ser vista ao acessar as URLs:
+
+- Interface Swagger (interativa): `http://localhost:8000/docs`;
+- Interface Redoc (apenas documentação): `http://localhost:8000/redoc`.
 
 É possível ajustar a porta de execução da aplicação através das variáveis de ambiente. Para mais informações, veja o arquivo `.env.example` já anteriormente mencionado.
 
@@ -153,7 +158,7 @@ Admin: Sim
 
 Você poderá utilizar este usuário para realizar testes e configuração inicial.
 
-**Veja que este usuário padrão não é um chef, e portanto, não pode cadastrar receitas.** Para cadastrar uma receita, será necessário cadastrar um chef através de uma requisição `POST` em `/users` (veja o Swagger para mais detalhes).
+**Veja que este usuário padrão não é um chef, e portanto, não pode cadastrar receitas.** Para cadastrar uma receita, será necessário cadastrar um chef através de uma requisição `POST` em `/users` (veja o Swagger ou o ReDoc para mais detalhes).
 
 Caso você não precise mais desse usuário, você poderá realizar login usando o mesmo (ou qualquer outro administrador) e removê-lo através da própria API. **É altamente recomendado fazer isso em cenários de produção o quanto antes.**
 
@@ -215,8 +220,8 @@ pytest
   - [ ] Pesquisar receitas por texto
   - [ ] Pesquisar receitas por chef e texto
   - [ ] Remover receita
-- [ ] Documentação
-  - [ ] Ajustar retornos de rotas no Swagger
+- [x] Documentação
+  - [x] Ajustar retornos de rotas no Swagger
   - [x] Ajustar nome da API no Swagger
 - [ ] Conteinerização
   - [ ] Dockerfile e .dockerignore para a aplicação
