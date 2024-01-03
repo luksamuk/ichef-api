@@ -95,11 +95,11 @@ docker compose -f docker-compose-dev.yml up -d
 
 Você poderá aguardar até que o PgAdmin 4 fique pronto e acessá-lo na porta `5433` do seu computador, ou conectar à porta `5432` com o gerenciador de banco de dados do seu gosto.
 
-> O PgAdmin4 pode ser acessado com usuário 'admin@admin.com' e senha 'admin'.
->
-> O usuário e a senha do banco de dados são iguais, sendo seu valor 'postgres'.
->
-> Se você estiver usando o PgAdmin4, certifique-se de conectar ao banco de dados usando o host e a porta `postgresql:5432`, já que o banco de dados estará acessível dentro da rede bridge criada pelo Docker.
+> _NOTA:_ O PgAdmin4 pode ser acessado com usuário 'admin@admin.com' e senha 'admin'.
+
+> _NOTA:_ O usuário e a senha do banco de dados são iguais, sendo seu valor 'postgres'.
+
+> _NOTA:_ Se você estiver usando o PgAdmin4, certifique-se de conectar ao banco de dados usando o host e a porta `postgresql:5432`, já que o banco de dados estará acessível dentro da rede bridge criada pelo Docker.
 
 No PgAdmin4 ou similar, Crie um banco de dados chamado `teste-workalove`, ou um outro nome de acordo com o arquivo `.env`.
 
@@ -112,9 +112,9 @@ make migrate
 alembic upgrade head
 ```
 
-> O arquivo `alembic/env.py` foi modificado para levar em consideração os models, configurações e variávels de ambiente do projeto. Caso você crie algum model novo, certifique-se de importá-lo em `model/__init__.py`.
->
-> Além disso, você poderá encontrar outros comandos e configurações analisando os arquivos `Makefile`, `docker-compose-dev.yml` e `.env`.
+> _NOTA:_ O arquivo `alembic/env.py` foi modificado para levar em consideração os models, configurações e variávels de ambiente do projeto. Caso você crie algum model novo, certifique-se de importá-lo em `model/__init__.py`.
+
+> _NOTA:_ Você poderá encontrar outros comandos e configurações analisando os arquivos `Makefile`, `docker-compose-dev.yml` e `.env`.
 
 ### Executando a aplicação
 
@@ -215,10 +215,10 @@ pytest
 - [ ] Testes (pt. 2)
   - [x] Remover usuário
   - [x] Criar receita
-  - [ ] Atualizar receita
   - [ ] Pesquisar receitas por chef
   - [ ] Pesquisar receitas por texto
   - [ ] Pesquisar receitas por chef e texto
+  - [ ] Atualizar receita
   - [ ] Remover receita
 - [x] Documentação
   - [x] Ajustar retornos de rotas no Swagger
