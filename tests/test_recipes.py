@@ -25,6 +25,7 @@ user_data = {
 
 payloads = None
 user = None
+jwt: str | None = None
 
 @lru_cache
 def load_payloads():
@@ -48,8 +49,20 @@ def prepare_data():
     for payload in payloads:
         payload["chef_id"] = user["id"]
 
+@pytest.fixture
+def admin_login():
+    global jwt
+    if jwt is None:
+        payload = { "email": "admin@admin.com", "password": "admin" }
+        response = client.post('/auth/token', json=payload)
+        assert response.status_code == 200
+        json = response.json()
+        assert "access_token" in json
+        jwt = json["access_token"]
 
-
+def admin_headers():
+    return { "Authorization": "Bearer " + jwt }
+        
 def check_response_valid(response):
     assert "chef_id" in response
     assert "title" in response
@@ -66,10 +79,11 @@ def check_response_corresponds_payload(response, payload):
     assert is_valid_uuid(response["id"])
         
 @pytest.mark.dependency()
-def test_create_recipe(prepare_data):
+def test_create_recipe(admin_login, prepare_data):
     # Create a non-chef user
     response = client.post(
         '/users',
+        headers=admin_headers(),
         json={
             "name": "Common User",
             "email": "commonuser@example.com",
@@ -85,19 +99,19 @@ def test_create_recipe(prepare_data):
     # Test every recipe payload
     for recipe in payloads:
         payload = recipe.copy()
-        response = client.post('/recipes', json=payload)
+        response = client.post('/recipes', headers=admin_headers(), json=payload)
         assert response.status_code == 200
         check_response_corresponds_payload(response.json(), payload)
 
         # Do not allow creating a recipe for a chef that does not exist
         payload["chef_id"] = str(uuid4())
-        response = client.post('/recipes', json=payload)
+        response = client.post('/recipes', headers=admin_headers(), json=payload)
         assert response.status_code == 404
         assert "detail" in response.json()
 
         # Do not allow creating a recipe for a user that is not a chef
         payload["chef_id"] = commonuser["id"]
-        response = client.post('/recipes', json=payload)
+        response = client.post('/recipes', headers=admin_headers(), json=payload)
         assert response.status_code == 400
         assert "detail" in response.json()
 
@@ -106,26 +120,26 @@ def test_create_recipe(prepare_data):
 
 @pytest.mark.skip(reason="Unimplemented")
 @pytest.mark.dependency()
-def test_update_recipe(prepare_data):
+def test_update_recipe(admin_login, prepare_data):
     pass
 
 @pytest.mark.skip(reason="Unimplemented")
 @pytest.mark.dependency()
-def test_search_recipe_by_chef(prepare_data):
+def test_search_recipe_by_chef(admin_login, prepare_data):
     pass
 
 @pytest.mark.skip(reason="Unimplemented")
 @pytest.mark.dependency()
-def test_search_recipe_by_text(prepare_data):
+def test_search_recipe_by_text(admin_login, prepare_data):
     pass
 
 @pytest.mark.skip(reason="Unimplemented")
 @pytest.mark.dependency()
-def test_search_recipe_by_chef_and_text(prepare_data):
+def test_search_recipe_by_chef_and_text(admin_login, prepare_data):
     pass
 
 @pytest.mark.skip(reason="Unimplemented")
 @pytest.mark.dependency()
-def test_delete_recipe(prepare_data):
+def test_delete_recipe(admin_login, prepare_data):
     pass
 
