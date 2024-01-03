@@ -5,7 +5,8 @@
 - Ambiente Linux ou PowerShell do Windows;
 - GNU Make (opcional);
 - Python 3.11 ou superior;
-- Docker instalado (de preferência com o usuário atual no grupo `docker`).
+- Docker instalado (de preferência com o usuário atual no grupo `docker`); e
+- Docker Compose (de preferência, o plugin oficial).
 
 ## Descrição dos diretórios do projeto
 
@@ -31,9 +32,31 @@ Há também outros arquivos utilitários como:
 - `Makefile`: Script do GNU Make para facilitar alguns processos.
 - `README.md`: Este documento.
 - `docker-compose-dev.yml`: Configuração do Docker Compose para ambiente local de desenvolvimento.
+- `docker-compose.yml`: Configuração do Docker Compose que também cria um contêiner para a aplicação. Ideal para execução sem configuração extra.
+- `.dockerignore`: Similar ao `.gitignore`, mas para o contexto a ser transferido para a imagem Docker do projeto.
 - `requirements.txt`: Arquivo para instalação de bibliotecas do ambiente Python via `pip`.
 
-## Executando o projeto
+## Executando o projeto com Docker Compose
+
+Antes de mais nada, você pode testar o projeto facilmente usando Docker. Esse processo criará uma imagem com a aplicação executando em Python 3.11, com um banco de dados já configurado e com variáveis de ambiente.
+
+Para iniciar o projeto com Docker Compose, navegue até a raiz deste projeto e use o comando:
+
+```bash
+docker compose up
+```
+
+Interessante ressaltar que a execução desse comando via Docker Compose expõe o PostgreSQL na porta `5432` e a API do projeto na porta `8000`, por padrão. Os dados do banco de dados ficarão armazenados em um volume virtual criado com Docker.
+
+Após a execução, caso você queira remover todos os itens que o Docker criar (incluindo volumes), use o seguinte comando:
+
+```bash
+docker compose down -v
+```
+
+Para mais informações, veja a [documentação do Docker Compose](https://docs.docker.com/compose/).
+
+## Executando o projeto manualmente
 
 ### Configurando o VirtualEnv
 
@@ -103,6 +126,8 @@ make startdb
 docker compose -f docker-compose-dev.yml up -d
 ```
 
+Isso iniciará o PostgreSQL 16.1 com um banco de dados chamado `teste-workalove`.
+
 Você poderá aguardar até que o PgAdmin 4 fique pronto e acessá-lo na porta `5433` do seu computador, ou conectar à porta `5432` com o gerenciador de banco de dados do seu gosto.
 
 > _NOTA:_ O PgAdmin4 pode ser acessado com usuário 'admin@admin.com' e senha 'admin'.
@@ -110,8 +135,6 @@ Você poderá aguardar até que o PgAdmin 4 fique pronto e acessá-lo na porta `
 > _NOTA:_ O usuário e a senha do banco de dados são iguais, sendo seu valor 'postgres'.
 
 > _NOTA:_ Se você estiver usando o PgAdmin4, certifique-se de conectar ao banco de dados usando o host e a porta `postgresql:5432`, já que o banco de dados estará acessível dentro da rede bridge criada pelo Docker.
-
-No PgAdmin4 ou similar, Crie um banco de dados chamado `teste-workalove`, ou um outro nome de acordo com o arquivo `.env`.
 
 Finalmente, execute as migrations no banco de dados, usando Alembic:
 
@@ -233,10 +256,10 @@ pytest
 - [x] Documentação
   - [x] Ajustar retornos de rotas no Swagger
   - [x] Ajustar nome da API no Swagger
-- [ ] Conteinerização
-  - [ ] Dockerfile e .dockerignore para a aplicação
-  - [ ] Arquivo Docker Compose para executar localmente
-  - [ ] Documentação de execução com Docker
+- [x] Conteinerização
+  - [x] Dockerfile e .dockerignore para a aplicação
+  - [x] Arquivo Docker Compose para executar localmente
+  - [x] Documentação de execução com Docker
 
 ## Referências
 

@@ -1,0 +1,57 @@
+# This Docker Compose file was built solely for development purposes.
+
+version: "3"
+services:
+  postgresql:
+    environment:
+      - POSTGRES_DB=ichef
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    image: postgres:16.1-alpine
+    ports:
+      - "5432:5432"
+    networks:
+      - ichef-network
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -d ichef -h localhost -p 5432'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  ichef:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
+    environment:
+      - DATABASE_NAME=ichef
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_HOST=postgresql
+      - DATABASE_PORT=5432
+      - API_PORT=8000
+      - JWT_SECRET=120ce9869ed3f77ecbccb522f931b479454225f4fd3c8af7
+      - JWT_ALGORITHM=HS256
+      - JWT_EXPIRY_SECONDS=600
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    networks:
+      - ichef-network
+    healthcheck:
+      test: ["CMD", "wget", "-O", "-", "http://localhost:8000/ping"]
+      interval: 10s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  db-data:
+
+networks:
+  ichef-network:
+    driver: bridge
+

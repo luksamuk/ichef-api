@@ -4,6 +4,7 @@ version: "3"
 services:
   postgresql:
     environment:
+      - POSTGRES_DB=teste-workalove
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     image: postgres:16.1-alpine
@@ -11,8 +12,11 @@ services:
       - "5432:5432"
     networks:
       - pgsql-network
-    # volumes:
-    #   - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -d teste-workalove -h localhost -p 5432'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
 
   pgadmin:
     image: dpage/pgadmin4
@@ -22,7 +26,8 @@ services:
     ports:
       - "5433:80"
     depends_on:
-      - postgresql
+      postgresql:
+        condition: service_healthy
     networks:
       - pgsql-network
     healthcheck:
@@ -31,9 +36,6 @@ services:
       timeout: 10s
       start_period: 160s
       retries: 3
-
-# volumes:
-#   db-data:
 
 networks:
   pgsql-network:
