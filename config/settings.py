@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
 
 class Settings(BaseSettings):
-    app_name: str = 'Teste Técnico Workalove'
+    app_name: str = 'iChef'
     database_name: str
     database_user: str
     database_password: str
