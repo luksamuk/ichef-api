@@ -23,7 +23,6 @@ user_data = {
 }
 
 payloads = None
-user = None
 jwt: str | None = None
 chef_jwt: str | None = None
 
@@ -35,7 +34,7 @@ def load_payloads():
 @pytest.fixture
 def prepare_data():
     global payloads
-    global user
+    global chef_jwt
     
     if payloads is None:
         payloads = load_payloads()

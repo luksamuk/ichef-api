@@ -65,7 +65,7 @@ def update_user(db: Session, token: str, id: uuid.UUID, payload: schema.UserUpda
         raise HTTPException(status_code=400, detail='Nothing needs to be changed')
 
     # To update an user, you must either be an admin or the referred user
-    if (not auth_data.is_admin) or (str(id) != auth_data.user_id):
+    if (not auth_data.is_admin) and (str(id) != auth_data.user_id):
         raise HTTPException(
             status_code=403,
             detail='A user can only be changed by an administrator or by themself'

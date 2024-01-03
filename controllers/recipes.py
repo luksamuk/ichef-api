@@ -60,7 +60,7 @@ def update_recipe(db: Session, token: str, id: uuid.UUID, payload: schema.Recipe
     # To update a recipe, you must either be an admin or own it.
     # We also do not enforce the chef role; if, for some reason, this property
     # is changed, the user should still be able to change the recipe.
-    if (not auth_data.is_admin) or (str(db_model.chef_id) != auth_data.user_id):
+    if (not auth_data.is_admin) and (str(db_model.chef_id) != auth_data.user_id):
         raise HTTPException(
             status_code=403,
             detail='A recipe can only be changed by an administrator or by its owner'
