@@ -22,6 +22,7 @@ user_data = {
     "is_chef": True,
 }
 
+user_payload = None
 payloads = None
 jwt: str | None = None
 chef_jwt: str | None = None
@@ -34,14 +35,19 @@ def load_payloads():
 @pytest.fixture
 def prepare_data():
     global payloads
+    global user_payload
     global chef_jwt
     
     if payloads is None:
         payloads = load_payloads()
+        assert isinstance(payloads, list)
 
     if chef_jwt is None:
+        # Create and save chef
         response = client.post('/users', json=user_data)
         assert response.status_code == 200
+        user_payload = response.json()
+        
         # Perform login
         response = client.post(
             '/auth/token',
@@ -96,28 +102,187 @@ def test_create_recipe(admin_login, prepare_data):
         assert "detail" in response.json()
 
 
+@pytest.mark.dependency(depends=["test_create_recipe"])
+def test_search_recipe_by_chef(admin_login, prepare_data):
+    payload = { "chef_id": user_payload["id"] }
+    
+    # Do not allow search if not logged in
+    response = client.post('/recipes/search', json=payload)
+    assert response.status_code == 403
+    assert "detail" in response.json()
+
+    # Fail search if not providing any search filters
+    response = client.post('/recipes/search', headers=admin_headers(), json={})
+    assert response.status_code == 400
+    assert "detail" in response.json()
+
+    # Search for chef's recipes using Admin account
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == len(payloads)
+
+    # Search for chef's recipes using Chef's own account
+    response = client.post('/recipes/search', headers=chef_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == len(payloads)
+
+
+@pytest.mark.dependency(depends=["test_create_recipe"])
+def test_search_recipe_by_text(admin_login, prepare_data):
+    payload = { "text": "torta" }
+
+    # Do not allow search if not logged in
+    response = client.post('/recipes/search', json=payload)
+    assert response.status_code == 403
+    assert "detail" in response.json()
+
+    # Fail search if not providing any search filters
+    response = client.post('/recipes/search', headers=admin_headers(), json={})
+    assert response.status_code == 400
+    assert "detail" in response.json()
+
+    # Search for recipes containing 'torta' using Admin account (two recipes)
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 2
+
+    # Search for recipes containing 'Torta' using Chef's own account (two recipes)
+    response = client.post('/recipes/search', headers=chef_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 2
+
+    # Search for recipes containing 'MORANGO' (two recipes)
+    payload = { "text": "MORANGO" }
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 2
+
+    # Search for recipes containing 'Sorvete' (one recipe)
+    payload = { "text": "Sorvete" }
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 1
+
+    # Search for recipes containing 'calda rala' (one recipe)
+    payload = { "text": "calda rala" }
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 1
+
+    # Search for recipes containing 'amendoim' (no recipes)
+    payload = { "text": "amendoim" }
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 0
+
+    # Search for recipes containing 'ingredientes' (three recipes)
+    payload = { "text": "ingredientes" }
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 3
+
+
+@pytest.mark.dependency(depends=["test_create_recipe"])
+def test_search_recipe_by_chef_and_text(admin_login, prepare_data):
+    payload = { "chef_id": user_payload["id"], "text": "torta" }
+
+    # Do not allow search if not logged in
+    response = client.post('/recipes/search', json=payload)
+    assert response.status_code == 403
+    assert "detail" in response.json()
+
+    # Fail search if not providing any search filters
+    response = client.post('/recipes/search', headers=admin_headers(), json={})
+    assert response.status_code == 400
+    assert "detail" in response.json()
+
+    # Search for recipes containing 'torta' using Admin account (two recipes)
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 2
+
+    # Search for recipes containing 'Torta' using Chef's own account (two recipes)
+    response = client.post('/recipes/search', headers=chef_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 2
+
+    # Search for recipes containing 'MORANGO' (two recipes)
+    payload["text"] = "MORANGO"
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 2
+
+    # Search for recipes containing 'Sorvete' (one recipe)
+    payload["text"] = "Sorvete"
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 1
+
+    # Search for recipes containing 'calda rala' (one recipe)
+    payload["text"] = "calda rala"
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 1
+
+    # Search for recipes containing 'amendoim' (no recipes)
+    payload["text"] = "amendoim"
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 0
+
+    # Search for recipes containing 'ingredientes' (three recipes)
+    payload["text"] = "ingredientes"
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 3
+    pass
+
+
 @pytest.mark.skip(reason="Unimplemented")
-@pytest.mark.dependency()
+@pytest.mark.dependency(depends=[
+    "test_search_recipe_by_text",
+    "test_search_recipe_by_chef",
+    "test_search_recipe_by_chef_and_text",
+])
 def test_update_recipe(admin_login, prepare_data):
     pass
 
-@pytest.mark.skip(reason="Unimplemented")
-@pytest.mark.dependency()
-def test_search_recipe_by_chef(admin_login, prepare_data):
-    pass
 
 @pytest.mark.skip(reason="Unimplemented")
-@pytest.mark.dependency()
-def test_search_recipe_by_text(admin_login, prepare_data):
-    pass
-
-@pytest.mark.skip(reason="Unimplemented")
-@pytest.mark.dependency()
-def test_search_recipe_by_chef_and_text(admin_login, prepare_data):
-    pass
-
-@pytest.mark.skip(reason="Unimplemented")
-@pytest.mark.dependency()
+@pytest.mark.dependency(depends=["test_update_recipe"])
 def test_delete_recipe(admin_login, prepare_data):
     pass
+
 

@@ -266,9 +266,9 @@ pytest
 - [ ] Testes (pt. 2)
   - [x] Remover usuário
   - [x] Criar receita
-  - [ ] Pesquisar receitas por chef
-  - [ ] Pesquisar receitas por texto
-  - [ ] Pesquisar receitas por chef e texto
+  - [x] Pesquisar receitas por chef
+  - [x] Pesquisar receitas por texto
+  - [x] Pesquisar receitas por chef e texto
   - [ ] Atualizar receita
   - [ ] Remover receita
 - [x] Documentação
