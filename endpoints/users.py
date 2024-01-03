@@ -47,7 +47,14 @@ async def find_user_by_email(user_email: str, db: Session = Depends(db.make_sess
 
 @router.put('/{user_uuid}', response_model=schema.User)
 async def update_user(token: Annotated[str, Depends(JWTBearer())],
-                      user_uuid: UUID, payload: schema.UserUpdate,
+                      user_uuid: UUID,
+                      payload: schema.UserUpdate,
                       db: Session = Depends(db.make_session)):
     return controller.update_user(db, token, user_uuid, payload)
 
+
+@router.delete('/{user_uuid}', status_code=204)
+async def delete_user(token: Annotated[str, Depends(JWTBearer())],
+                      user_uuid: UUID,
+                      db: Session = Depends(db.make_session)):
+    controller.delete_user(db, token, id=user_uuid)

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, delete
 from fastapi import HTTPException
 import uuid
 
@@ -61,4 +61,11 @@ def update_recipe(db: Session, id: uuid.UUID, payload: schema.RecipeUpdate) -> m
     db.refresh(db_model)
     return db_model
 
+def delete_recipe(db: Session, id: uuid.UUID):
+    db_model = get_recipe(db, id)
+    db.delete(db_model)
+    db.commit()
 
+def delete_all_chef_recipes(db: Session, chef_id: uuid.UUID):
+    stmt = delete(model.Recipe).where(model.Recipe.chef_id == chef_id)
+    db.execute(stmt)

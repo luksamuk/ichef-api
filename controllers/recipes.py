@@ -68,3 +68,21 @@ def update_recipe(db: Session, token: str, id: uuid.UUID, payload: schema.Recipe
 
     return repository.update_recipe(db, id, payload)
 
+
+def delete_recipe(db: Session, token: str, id: uuid.UUID):
+    auth_data: JWTPayload = jwt_decode(token)
+
+    db_model = repository.get_recipe(db, id)
+    if db_model is None:
+        raise HTTPException(status_code=404, detail='Recipe not found')
+
+    # A recipe can only be deleted by an admin or by its owner
+    if (not auth_data.is_admin) and (str(db_model.chef_id) != auth_data.user_id):
+        raise HTTPException(
+            status_code=403,
+            detail='A recipe can only be deleted by an administrator or by its owner'
+        )
+
+    return repository.delete_recipe(db, id)
+
+

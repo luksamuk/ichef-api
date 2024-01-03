@@ -49,3 +49,8 @@ def update_user(db: Session, id: uuid.UUID, payload: schema.UserUpdate) -> model
     db.commit()
     db.refresh(db_model)
     return db_model
+
+def delete_user(db: Session, id: uuid.UUID):
+    db_model = get_user(db, id)
+    db.delete(db_model)
+    db.commit()

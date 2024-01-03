@@ -5,6 +5,7 @@ import uuid
 from util.auth import jwt_decode
 from schemas.auth import JWTPayload
 from repository import users as repository
+from repository import recipes as recipes_repository
 from model import users as model
 from schemas import users as schema
 from util import encryption, validation
@@ -85,3 +86,23 @@ def update_user(db: Session, token: str, id: uuid.UUID, payload: schema.UserUpda
 
     return repository.update_user(db, id, payload)
 
+
+def delete_user(db: Session, token: str, id: uuid.UUID):
+    auth_data: JWTPayload = jwt_decode(token)
+    
+    # A user can only delete themself or, if it is an admin, they can also
+    # delete any user whatsoever.
+    if (not auth_data.is_admin) and (str(id) != auth_data.user_id):
+        raise HTTPException(
+            status_code=403,
+            detail='A user can only be deleted by an administrator or by themself'
+        )
+
+    if repository.get_user(db, id) is None:
+        raise HTTPException(status_code=404, detail='User not found')
+
+    # Remove all user's recipes
+    recipes_repository.delete_all_chef_recipes(db, chef_id=id)
+
+    # Finally, remove user itself
+    repository.delete_user(db, id)

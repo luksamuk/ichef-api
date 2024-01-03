@@ -185,12 +185,6 @@ pytest
 - [x] Controllers entre endpoints e repositórios
   - [x] Controller de usuários
   - [x] Controller de receitas
-- [ ] Testes (pt. 2)
-  - [x] Criar receita
-  - [ ] Atualizar receita
-  - [ ] Pesquisar receitas por chef
-  - [ ] Pesquisar receitas por texto
-  - [ ] Pesquisar receitas por chef e texto
 - [x] Autenticação
   - [x] Autenticação via JWT
   - [x] Criação de receita através do usuário da sessão atual
@@ -199,10 +193,16 @@ pytest
   - [x] Atualizar testes para usar autenticação
   - [x] Permitir alterações quando o usuário é admin
   - [x] Adicionar rota específica de criação de admins (acessível a admins)
+- [ ] Testes (pt. 2)
+  - [x] Criar receita
+  - [ ] Atualizar receita
+  - [ ] Pesquisar receitas por chef
+  - [ ] Pesquisar receitas por texto
+  - [ ] Pesquisar receitas por chef e texto
 - [ ] Deletes das entidades
-  - [ ] Desativação de usuários
+  - [ ] Remoção de usuários
 	- [ ] Documentação para remoção do usuário `admin@admin.com`
-  - [ ] Remoção de receitas
+  - [x] Remoção de receitas
 - [ ] Testes (pt. 3)
   - [ ] Paginação de listagem
   - [ ] Desativar usuário

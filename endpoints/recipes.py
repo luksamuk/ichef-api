@@ -39,8 +39,14 @@ async def search_recipe(payload: schema.RecipeSearchFilters, page: int = 0, size
 
 @router.put('/{recipe_uuid}', response_model=schema.Recipe)
 async def update_recipe(token: Annotated[str, Depends(JWTBearer())],
-                        recipe_uuid: UUID, payload: schema.RecipeUpdate,
+                        recipe_uuid: UUID,
+                        payload: schema.RecipeUpdate,
                         db: Session = Depends(db.make_session)):
     return controller.update_recipe(db, token, recipe_uuid, payload)
 
 
+@router.delete('/{recipe_uuid}', status_code=204)
+async def delete_recipe(token: Annotated[str, Depends(JWTBearer())],
+                        recipe_uuid: UUID,
+                        db: Session = Depends(db.make_session)):
+    controller.delete_recipe(db, token, id=recipe_uuid)
