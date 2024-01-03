@@ -1,4 +1,4 @@
-# Teste Técnico Workalove
+# Teste Técnico Workalove: API iChef
 
 ## Requisitos
 
@@ -116,22 +116,6 @@ alembic upgrade head
 >
 > Além disso, você poderá encontrar outros comandos e configurações analisando os arquivos `Makefile`, `docker-compose-dev.yml` e `.env`.
 
-### Usuário administrador padrão
-
-Após a primeira execução, será criado um administrador padrão com as seguintes características:
-
-```bash
-Nome: Admin
-E-mail: admin@admin.com
-Senha: admin
-Chef: Não
-Admin: Sim
-```
-
-Você poderá utilizar este usuário para realizar testes e configuração inicial.
-
-Caso você não precise mais desse usuário, você poderá realizar login usando o mesmo (ou qualquer outro administrador) e removê-lo através da própria API. **É altamente recomendado fazer isso em cenários de produção o quanto antes.**
-
 ### Executando a aplicação
 
 Para iniciar a aplicação em modo debug, posto que o banco de dados esteja em execução e as migrations tenham sido executadas, você poderá usar o seguinte comando:
@@ -148,6 +132,30 @@ Caso você queira executar a aplicação sem utilizar o `uvicorn` diretamente, e
 ```bash
 python3 main.py
 ```
+
+## Uso do projeto
+
+Este projeto trata-se de uma API REST. A documentação dos _endpoints_ existentes pode ser vista ao acessar a URL `http://localhost:8000/docs`, que dará acesso à interface do Swagger.
+
+É possível ajustar a porta de execução da aplicação através das variáveis de ambiente. Para mais informações, veja o arquivo `.env.example` já anteriormente mencionado.
+
+### Usuário administrador padrão
+
+Após a execução das migrations, será criado um administrador padrão com as seguintes características:
+
+```bash
+Nome: Admin
+E-mail: admin@admin.com
+Senha: admin
+Chef: Não
+Admin: Sim
+```
+
+Você poderá utilizar este usuário para realizar testes e configuração inicial.
+
+**Veja que este usuário padrão não é um chef, e portanto, não pode cadastrar receitas.** Para cadastrar uma receita, será necessário cadastrar um chef através de uma requisição `POST` em `/users` (veja o Swagger para mais detalhes).
+
+Caso você não precise mais desse usuário, você poderá realizar login usando o mesmo (ou qualquer outro administrador) e removê-lo através da própria API. **É altamente recomendado fazer isso em cenários de produção o quanto antes.**
 
 ## Testes
 
@@ -209,10 +217,11 @@ pytest
   - [ ] Remover receita
 - [ ] Documentação
   - [ ] Ajustar retornos de rotas no Swagger
-  - [ ] Ajustar nome da API no Swagger
+  - [x] Ajustar nome da API no Swagger
 - [ ] Conteinerização
   - [ ] Dockerfile e .dockerignore para a aplicação
   - [ ] Arquivo Docker Compose para executar localmente
+  - [ ] Documentação de execução com Docker
 
 ## Referências
 
