@@ -12,16 +12,26 @@
 Abaixo há uma descrição rápida dos diretórios e arquivos principais do projeto. Para mais informações, veja a documentação da solução.
 
 - `alembic` e `alembic.ini`: Configurações e arquivos de migrations.
+- `auth`: Middlewares de autenticação.
 - `config`: Módulo relacionado a leitura de configurações de arquivos `.env` e/ou variáveis de ambiente.
 - `controllers`: Módulo relacionado a controles de regras de negócio da aplicação.
+- `db`: Módulo de configuração de conexão e persistência genérica com banco de dados.
 - `endpoints`: Reúne os endpoints REST da aplicação.
 - `model`: Reúne os models, portanto sendo diretamente relacionado à persistência no banco de dados.
 - `repository`: Reúne estruturas relacionadas a consulta e armazenamento no banco de dados, como queries realizadas via ORM.
 - `schemas`: Reúne estruturas representacionais (DTOs) para envio e recebimento na API, que podem ser mapeadas para models, dependendo da situação.
+- `tests`: Arquivos relacionados a testes.
 - `util`: Utilitários variados, como funções de encriptação.
-- `tests`: Módulo e arquivos relacionados a testes.
-- `db`: Módulo de configuração de conexão e persistência genérica com banco de dados.
 - `main.py`: Ponto de entrada principal do projeto.
+
+Há também outros arquivos utilitários como:
+
+- `.github`: Diretório de definição de workflows e automação de testes do Github Actions.
+- `LICENSE`: Arquivo de licenciamento da aplicação.
+- `Makefile`: Script do GNU Make para facilitar alguns processos.
+- `README.md`: Este documento.
+- `docker-compose-dev.yml`: Configuração do Docker Compose para ambiente local de desenvolvimento.
+- `requirements.txt`: Arquivo para instalação de bibliotecas do ambiente Python via `pip`.
 
 ## Executando o projeto
 
