@@ -130,6 +130,8 @@ Admin: Sim
 
 Você poderá utilizar este usuário para realizar testes e configuração inicial.
 
+Caso você não precise mais desse usuário, você poderá realizar login usando o mesmo (ou qualquer outro administrador) e removê-lo através da própria API. **É altamente recomendado fazer isso em cenários de produção o quanto antes.**
+
 ### Executando a aplicação
 
 Para iniciar a aplicação em modo debug, posto que o banco de dados esteja em execução e as migrations tenham sido executadas, você poderá usar o seguinte comando:
@@ -193,21 +195,18 @@ pytest
   - [x] Atualizar testes para usar autenticação
   - [x] Permitir alterações quando o usuário é admin
   - [x] Adicionar rota específica de criação de admins (acessível a admins)
+- [x] Deletes das entidades
+  - [x] Remoção de usuários
+	- [x] Documentação para remoção do usuário `admin@admin.com`
+  - [x] Remoção de receitas
 - [ ] Testes (pt. 2)
+  - [x] Remover usuário
   - [x] Criar receita
   - [ ] Atualizar receita
   - [ ] Pesquisar receitas por chef
   - [ ] Pesquisar receitas por texto
   - [ ] Pesquisar receitas por chef e texto
-- [ ] Deletes das entidades
-  - [ ] Remoção de usuários
-	- [ ] Documentação para remoção do usuário `admin@admin.com`
-  - [x] Remoção de receitas
-- [ ] Testes (pt. 3)
-  - [ ] Paginação de listagem
-  - [ ] Desativar usuário
-  - [ ] Remover usuário
-  - [ ] Deletar receita
+  - [ ] Remover receita
 - [ ] Documentação
   - [ ] Ajustar retornos de rotas no Swagger
   - [ ] Ajustar nome da API no Swagger

@@ -273,13 +273,29 @@ def test_update_user(admin_login):
         assert response.status_code == 400
         assert "detail" in response.json()
 
-@pytest.mark.skip(reason="Unimplemented")
-@pytest.mark.dependency(depends=["test_update_user"])
-def test_disable_user(admin_login):
-    pass
 
-@pytest.mark.skip(reason="Unimplemented")
-@pytest.mark.dependency(depends=["test_disable_user"])
+@pytest.mark.dependency(depends=["test_update_user"])
 def test_remove_user(admin_login):
-    pass
+    # We'll remove all users that we added so far
+    for _, payload in payloads.items():
+        # Fetch current user by e-mail
+        response = client.get(
+            '/users/email/' + payload["email"],
+            headers=admin_headers(),
+        )
+        assert response.status_code == 200
+        user = response.json()
+        check_response_valid(user)
+
+        route = '/users/' + user["id"]
+
+        # Do not allow deleting user without authentication
+        response = client.delete(route)
+        assert response.status_code == 403
+        assert "detail" in response.json()
+
+        # Delete user
+        response = client.delete(route, headers=admin_headers())
+        assert response.status_code == 204
+
 

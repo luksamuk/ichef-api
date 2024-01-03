@@ -15,7 +15,6 @@ def get_recipes(db: Session, offset: int, limit: int) -> list[model.Recipe]:
         .offset(offset).limit(limit)\
         .all()
 
-# TODO: Get number of pages
 
 def create_recipe(db: Session, model: model.Recipe) -> model.Recipe:
     model.text_search =\
@@ -61,10 +60,12 @@ def update_recipe(db: Session, id: uuid.UUID, payload: schema.RecipeUpdate) -> m
     db.refresh(db_model)
     return db_model
 
+
 def delete_recipe(db: Session, id: uuid.UUID):
     db_model = get_recipe(db, id)
     db.delete(db_model)
     db.commit()
+
 
 def delete_all_chef_recipes(db: Session, chef_id: uuid.UUID):
     stmt = delete(model.Recipe).where(model.Recipe.chef_id == chef_id)
