@@ -269,7 +269,7 @@ pytest
   - [x] Pesquisar receitas por chef
   - [x] Pesquisar receitas por texto
   - [x] Pesquisar receitas por chef e texto
-  - [ ] Atualizar receita
+  - [x] Atualizar receita
   - [ ] Remover receita
 - [x] Documentação
   - [x] Ajustar retornos de rotas no Swagger

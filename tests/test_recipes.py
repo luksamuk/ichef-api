@@ -277,12 +277,88 @@ def test_search_recipe_by_chef_and_text(admin_login, prepare_data):
     "test_search_recipe_by_chef_and_text",
 ])
 def test_update_recipe(admin_login, prepare_data):
-    pass
+    # Search for a single recipe containing 'calda rala'
+    payload = { "text": "calda rala" }
+    response = client.post('/recipes/search', headers=admin_headers(), json=payload)
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 1
+    recipe = res[0]
+
+    route = '/recipe/' + recipe["id"]
+
+    # Do not allow changing anything if you're not logged in
+    response = client.put(route, json={"title": "This Should Fail"})
+    assert response.status_code == 403
+    assert "detail" in response.json()
+
+    # Change name as Admin
+    response = client.put(route, headers=admin_headers(), json={
+        "title": "New Admin Recipe Name",
+    })
+    assert response.status_code == 200
+    check_response_valid(response.json())
+    assert response.json()["title"] == "New Admin Recipe Name"
+
+    # Change text as Admin
+    response = client.put(route, headers=admin_headers(), json={
+        "text": "This is my new admin recipe.",
+    })
+    assert response.status_code == 200
+    check_response_valid(response.json())
+    assert response.json()["text"] = "This is my new admin recipe."
+
+    # Change name and text as Admin
+    response = client.put(route, headers=admin_headers(), json={
+        "name": "My Admin Recipe",
+        "text": "This is an admin recipe."
+    })
+    assert response.status_code == 200
+    check_response_valid(response.json())
+    assert response.json()["title"] = "My Admin Recipe"
+    assert response.json()["text"] = "This is an admin recipe."
+
+    # Change name as chef (recipe owner)
+    response = client.put(route, headers=chef_headers(), json={
+        "title": "New Chef Recipe Name",
+    })
+    assert response.status_code == 200
+    check_response_valid(response.json())
+    assert response.json()["title"] == "New Chef Recipe Name"
+
+    # Change text as chef (recipe owner)
+    response = client.put(route, headers=chef_headers(), json={
+        "text": "This is my new chef recipe.",
+    })
+    assert response.status_code == 200
+    check_response_valid(response.json())
+    assert response.json()["text"] = "This is my new chef recipe."
+
+    # Change name and text as chef
+    response = client.put(route, headers=chef_headers(), json={
+        "name": "My Chef Recipe",
+        "text": "This is a chef recipe."
+    })
+    assert response.status_code == 200
+    check_response_valid(response.json())
+    assert response.json()["title"] = "My Chef Recipe"
+    assert response.json()["text"] = "This is a chef recipe."
 
 
 @pytest.mark.skip(reason="Unimplemented")
 @pytest.mark.dependency(depends=["test_update_recipe"])
 def test_delete_recipe(admin_login, prepare_data):
+    # Find all recipes by the chef
+
+    # Delete first recipe
+
+    # Check if number of recipes decreased
+
+    # Delete chef
+
+    # Check if all recipes were deleted as well
+    
     pass
 
 
