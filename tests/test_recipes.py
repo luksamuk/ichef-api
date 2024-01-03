@@ -307,7 +307,7 @@ def test_update_recipe(admin_login, prepare_data):
     })
     assert response.status_code == 200
     check_response_valid(response.json())
-    assert response.json()["text"] = "This is my new admin recipe."
+    assert response.json()["text"] == "This is my new admin recipe."
 
     # Change name and text as Admin
     response = client.put(route, headers=admin_headers(), json={
@@ -316,8 +316,8 @@ def test_update_recipe(admin_login, prepare_data):
     })
     assert response.status_code == 200
     check_response_valid(response.json())
-    assert response.json()["title"] = "My Admin Recipe"
-    assert response.json()["text"] = "This is an admin recipe."
+    assert response.json()["title"] == "My Admin Recipe"
+    assert response.json()["text"] == "This is an admin recipe."
 
     # Change name as chef (recipe owner)
     response = client.put(route, headers=chef_headers(), json={
@@ -333,7 +333,7 @@ def test_update_recipe(admin_login, prepare_data):
     })
     assert response.status_code == 200
     check_response_valid(response.json())
-    assert response.json()["text"] = "This is my new chef recipe."
+    assert response.json()["text"] == "This is my new chef recipe."
 
     # Change name and text as chef
     response = client.put(route, headers=chef_headers(), json={
@@ -342,23 +342,53 @@ def test_update_recipe(admin_login, prepare_data):
     })
     assert response.status_code == 200
     check_response_valid(response.json())
-    assert response.json()["title"] = "My Chef Recipe"
-    assert response.json()["text"] = "This is a chef recipe."
+    assert response.json()["title"] == "My Chef Recipe"
+    assert response.json()["text"] == "This is a chef recipe."
 
 
-@pytest.mark.skip(reason="Unimplemented")
 @pytest.mark.dependency(depends=["test_update_recipe"])
 def test_delete_recipe(admin_login, prepare_data):
     # Find all recipes by the chef
+    response = client.post('/recipes/search', headers=admin_headers(), json={
+        "chef_id": user_payload["id"]
+    })
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 3
+    recipe = res[0]
+
+    route = '/recipes/' + recipe["id"]
+    
+    # Do not allow deleting recipe if not logged in
+    response = client.delete(route)
+    assert response.status_code == 403
+    assert "detail" in response.json()
 
     # Delete first recipe
+    response = client.delete(route, headers=admin_headers())
+    assert response.status_code == 204
 
     # Check if number of recipes decreased
+    response = client.post('/recipes/search', headers=admin_headers(), json={
+        "chef_id": user_payload["id"]
+    })
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 2
 
     # Delete chef
+    response = client.delete('/users/' + user_payload["id"], headers=admin_headers())
+    assert response.status_code == 204
 
     # Check if all recipes were deleted as well
-    
-    pass
+    response = client.post('/recipes/search', headers=admin_headers(), json={
+        "chef_id": user_payload["id"]
+    })
+    assert response.status_code == 200
+    res = response.json()
+    assert isinstance(res, list)
+    assert len(res) == 0
 
 

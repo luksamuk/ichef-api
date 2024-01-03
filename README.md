@@ -263,14 +263,14 @@ pytest
   - [x] Remoção de usuários
 	- [x] Documentação para remoção do usuário `admin@admin.com`
   - [x] Remoção de receitas
-- [ ] Testes (pt. 2)
+- [x] Testes (pt. 2)
   - [x] Remover usuário
   - [x] Criar receita
   - [x] Pesquisar receitas por chef
   - [x] Pesquisar receitas por texto
   - [x] Pesquisar receitas por chef e texto
   - [x] Atualizar receita
-  - [ ] Remover receita
+  - [x] Remover receita
 - [x] Documentação
   - [x] Ajustar retornos de rotas no Swagger
   - [x] Ajustar nome da API no Swagger
