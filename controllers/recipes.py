@@ -47,10 +47,8 @@ def find_recipe(db: Session, payload: schema.RecipeSearchFilters, offset: int = 
     return repository.find_by_filter(db, payload, offset, limit)
 
 
-def update_recipe(db: Session, id: uuid.UUID, payload: schema.RecipeUpdate) -> model.Recipe:
-    # TODO: Can only update recipe belonging to current user.
-    # Current user must be a chef (this is assumed, since recipe creation could
-    # only be done by chefs) and this recipe must belong to them
+def update_recipe(db: Session, token: str, id: uuid.UUID, payload: schema.RecipeUpdate) -> model.Recipe:
+    auth_data: JWTPayload = jwt_decode(token)
     
     if (payload.title is None) and (payload.text is None):
         raise HTTPException(status_code=400, detail='Nothing needs to be changed')
@@ -58,6 +56,15 @@ def update_recipe(db: Session, id: uuid.UUID, payload: schema.RecipeUpdate) -> m
     db_model = repository.get_recipe(db, id)
     if db_model is None:
         raise HTTPException(status_code=404, detail='Recipe not found')
+
+    # To update a recipe, you must either be an admin or own it.
+    # We also do not enforce the chef role; if, for some reason, this property
+    # is changed, the user should still be able to change the recipe.
+    if (not auth_data.is_admin) or (str(db_model.chef_id) != auth_data.user_id):
+        raise HTTPException(
+            status_code=403,
+            detail='A recipe can only be changed by an administrator or by its owner'
+        )
 
     return repository.update_recipe(db, id, payload)
 

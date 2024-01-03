@@ -38,7 +38,9 @@ async def search_recipe(payload: schema.RecipeSearchFilters, page: int = 0, size
 
 
 @router.put('/{recipe_uuid}', response_model=schema.Recipe)
-async def update_recipe(recipe_uuid: UUID, payload: schema.RecipeUpdate, db: Session = Depends(db.make_session)):
-    return controller.update_recipe(db, recipe_uuid, payload)
+async def update_recipe(token: Annotated[str, Depends(JWTBearer())],
+                        recipe_uuid: UUID, payload: schema.RecipeUpdate,
+                        db: Session = Depends(db.make_session)):
+    return controller.update_recipe(db, token, recipe_uuid, payload)
 
 
