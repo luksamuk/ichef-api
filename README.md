@@ -1,5 +1,23 @@
 # Teste Técnico Workalove: API iChef
 
+Este projeto descreve uma API de compartilhamento de receitas entre chefs e cozinheiros amadores.
+
+Com esta API, você pode:
+
+- Cadastrar-se na aplicação (como usuário comum ou chef, e também com poderes administrativos da plataforma);
+- Realizar login (via autenticação JWT stateless);
+- Visualizar um ou mais usuários (com paginação das informações);
+- Visualizar um ou mais usuários que sejam chefs (com paginação das informações);
+- Remover usuários (apenas você mesmo ou, se você for um administrador, qualquer usuário);
+  - *Nota:* Isso também remove as receitas de um usuário;
+- Cadastrar receitas (apenas se você for um chef);
+- Visualizar todas as receitas (com paginação das informações);
+- Pesquisar uma receita:
+  - Por ID do chef;
+  - Por texto (título ou corpo da receita, independente de onde estiver na mesma);
+  - Por ID do chef e por texto também.
+- Remover uma receita (apenas se você for o dono da receita ou, se você for um administrador, qualquer receita).
+
 ## Requisitos
 
 - Ambiente Linux ou PowerShell do Windows;
