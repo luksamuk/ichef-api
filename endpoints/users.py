@@ -24,13 +24,16 @@ async def get_users(page: int = 0, size: int = 100, db: Session = Depends(db.mak
 async def get_chefs(page: int = 0, size: int = 100, db: Session = Depends(db.make_session)):
     return controller.get_chefs(db, offset=size * page, limit=size)
 
-
 @router.post('/', response_model=schema.User)
-async def create_user(token: Annotated[str, Depends(JWTBearer())],
+async def create_user(payload: schema.UserCreate,
+                      db: Session = Depends(db.make_session)):
+    return controller.create_user(db, None, payload, False)
+
+@router.post('/admin', response_model=schema.User)
+async def create_admin_user(token: Annotated[str, Depends(JWTBearer())],
                       payload: schema.UserCreate,
                       db: Session = Depends(db.make_session)):
-    return controller.create_user(db, token, payload)
-
+    return controller.create_user(db, token, payload, True)
 
 @router.get('/{user_uuid}', response_model=schema.User, dependencies=[Depends(JWTBearer())])
 async def find_user_by_id(user_uuid: UUID, db: Session = Depends(db.make_session)):

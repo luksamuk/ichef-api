@@ -32,14 +32,15 @@ def get_chefs(db: Session, offset: int = 0, limit: int = 100) -> list[model.User
     return repository.get_chefs(db, offset, limit)
 
 
-def create_user(db: Session, token: str, payload: schema.UserCreate) -> model.User:
-    # An administrator can only be created by another administrator
-    auth_data: JWTPayload = jwt_decode(token)
-    if payload.is_admin and (not auth_data.is_admin):
-        raise HTTPException(
-            status_code=403,
-            detail='Only an administrator can create another administrator'
-        )
+def create_user(db: Session, token: str | None, payload: schema.UserCreate, is_admin: bool) -> model.User:
+    if token is not None:
+        # An administrator can only be created by another administrator
+        auth_data: JWTPayload = jwt_decode(token)
+        if is_admin and (not auth_data.is_admin):
+            raise HTTPException(
+                status_code=403,
+                detail='Only an administrator can create another administrator'
+            )
     
     if repository.get_user_by_email(db, email=payload.email):
         raise HTTPException(status_code=409, detail='User already exists')
@@ -50,7 +51,7 @@ def create_user(db: Session, token: str, payload: schema.UserCreate) -> model.Us
         email=payload.email,
         pw_hash=hashed_password,
         is_chef=payload.is_chef,
-        is_admin=payload.is_admin
+        is_admin=is_admin,
     )
     return repository.create_user(db, model=db_model)
 

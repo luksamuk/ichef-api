@@ -191,13 +191,14 @@ pytest
   - [ ] Pesquisar receitas por chef
   - [ ] Pesquisar receitas por texto
   - [ ] Pesquisar receitas por chef e texto
-- [ ] Autenticação
+- [x] Autenticação
   - [x] Autenticação via JWT
   - [x] Criação de receita através do usuário da sessão atual
   - [x] Admin criado na primeira execução
-  - [ ] Adicionar testes de autenticação
-  - [ ] Atualizar testes para usar autenticação
-  - [ ] Permitir alterações quando o usuário é admin
+  - [x] Adicionar testes de autenticação
+  - [x] Atualizar testes para usar autenticação
+  - [x] Permitir alterações quando o usuário é admin
+  - [x] Adicionar rota específica de criação de admins (acessível a admins)
 - [ ] Deletes das entidades
   - [ ] Desativação de usuários
 	- [ ] Documentação para remoção do usuário `admin@admin.com`

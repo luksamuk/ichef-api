@@ -9,7 +9,6 @@ class UserCommon(BaseModel):
     name: str
     email: str
     is_chef: bool
-    is_admin: bool
 
 class UserCreate(UserCommon):
     password: str
@@ -22,6 +21,7 @@ class UserUpdate(BaseModel):
 
 class User(UserCommon):
     id: UUID
+    is_admin: bool
     created_at: datetime
     updated_at: datetime
 

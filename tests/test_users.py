@@ -72,12 +72,19 @@ def admin_login():
 @pytest.mark.dependency()
 def test_create_admin(admin_login):
     payload = payloads["admin"]
-    response = client.post('/users', json=payload)
+    
+    # Do not allow creating an admin if not logged in as an admin
+    response = client.post('/users/admin', json=payload)
+    assert response.status_code == 403
+    assert "detail" in response.json()
+
+    # Create admin
+    response = client.post('/users/admin', headers=admin_headers(), json=payload)
     assert response.status_code == 200
     check_response_corresponds_payload(response.json(), payload)
 
     # Do not allow creating the same user again
-    response = client.post('/users', json=payload)
+    response = client.post('/users/admin', headers=admin_headers(), json=payload)
     assert response.status_code == 409
     assert "detail" in response.json()
 
